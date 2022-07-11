@@ -22,6 +22,53 @@ namespace CreateNotbookSystem.App.Views
         public MainWindowView()
         {
             InitializeComponent();
+
+            //窗口最小化
+            btnMin.Click += (s, e) =>
+            {
+                this.WindowState = WindowState.Minimized;
+            };
+
+            //窗口最大化
+            btnMax.Click += (s, e) =>
+            {
+                if (this.WindowState == WindowState.Maximized)
+                {
+                    this.WindowState = WindowState.Normal;
+                }
+                else
+                {
+                    this.WindowState = WindowState.Maximized;
+                }
+            };
+
+            //窗口关闭
+            btnClose.Click += (s, e) =>
+            {
+                this.Close();
+            };
+
+            //窗口拖动
+            colorZone.MouseMove += (s, e) =>
+            {
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    this.DragMove();
+                }
+            };
+
+            //双击窗口放大
+            colorZone.MouseDoubleClick += (s, e) =>
+            {
+                if (this.WindowState == WindowState.Normal)
+                {
+                    this.WindowState = WindowState.Maximized;
+                }
+                else
+                {
+                    this.WindowState = WindowState.Normal;
+                }
+            };
         }
     }
 }
