@@ -1,5 +1,7 @@
-﻿using Prism.DryIoc;
+﻿using CreateNotbookSystem.App.Views;
+using Prism.DryIoc;
 using Prism.Ioc;
+using Prism.Modularity;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -21,7 +23,7 @@ namespace CreateNotbookSystem.App
         /// <returns></returns>
         protected override Window CreateShell()
         {
-            return Container.Resolve<MainWindow>();
+            return Container.Resolve<MainWindowView>();
         }
 
         /// <summary>
@@ -30,6 +32,15 @@ namespace CreateNotbookSystem.App
         /// <param name="containerRegistry"></param>
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+        }
+
+        /// <summary>
+        /// 模块引入
+        /// </summary>
+        /// <returns></returns>
+        protected override IModuleCatalog CreateModuleCatalog()
+        {
+            return new ConfigurationModuleCatalog();
         }
     }
 }
