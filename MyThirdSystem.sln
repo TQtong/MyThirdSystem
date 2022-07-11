@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreateNotbookSystem.Common"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreateNotbookSystem.App", "CreateNotbookSystem.App\CreateNotbookSystem.App.csproj", "{1B93A0A0-008C-4191-8763-86AC05EC1DAF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateNotbookSystem.Service", "CreateNotbookSystem.Service\CreateNotbookSystem.Service.csproj", "{8DB7DC08-E75F-4969-B71F-FADF30764EC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{1B93A0A0-008C-4191-8763-86AC05EC1DAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B93A0A0-008C-4191-8763-86AC05EC1DAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B93A0A0-008C-4191-8763-86AC05EC1DAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DB7DC08-E75F-4969-B71F-FADF30764EC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DB7DC08-E75F-4969-B71F-FADF30764EC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DB7DC08-E75F-4969-B71F-FADF30764EC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DB7DC08-E75F-4969-B71F-FADF30764EC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

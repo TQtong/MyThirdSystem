@@ -18,7 +18,7 @@ namespace CreateNotbookSystem.App
     public partial class App : PrismApplication
     {
         /// <summary>
-        /// 启动项
+        /// 启动窗口
         /// </summary>
         /// <returns></returns>
         protected override Window CreateShell()
