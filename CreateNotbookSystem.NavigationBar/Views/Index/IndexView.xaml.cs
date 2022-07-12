@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CreateNotbookSystem.NavigationBar.Views
+namespace CreateNotbookSystem.NavigationBar.Views.Index
 {
     /// <summary>
     /// IndexView.xaml 的交互逻辑

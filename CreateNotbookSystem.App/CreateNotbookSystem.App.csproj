@@ -23,6 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CreateNotbookSystem.Common\CreateNotbookSystem.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Assets\Images\title.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
