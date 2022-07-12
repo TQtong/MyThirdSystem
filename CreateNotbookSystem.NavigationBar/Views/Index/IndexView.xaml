@@ -4,11 +4,207 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CreateNotbookSystem.NavigationBar.Views.Index"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
-        <TextBlock Text="index" FontSize="100"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!--  标题  -->
+        <StackPanel>
+            <TextBlock
+                Margin="15,10"
+                FontSize="30"
+                Text="Hello,Wrold!!!" />
+        </StackPanel>
+
+        <!--  总览  -->
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding TaskBarModels}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="4" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        Margin="10"
+                        Background="{Binding Color}"
+                        CornerRadius="10">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <DropShadowEffect
+                                                    BlurRadius="10"
+                                                    ShadowDepth="1"
+                                                    Color="#DDD" />
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid>
+                            <StackPanel Margin="15,5">
+                                <materialDesign:PackIcon
+                                    Width="40"
+                                    Height="40"
+                                    Kind="{Binding Icon}" />
+                                <TextBlock
+                                    Margin="0,15"
+                                    FontSize="20"
+                                    Text="{Binding Title}" />
+                                <TextBlock
+                                    FontSize="30"
+                                    FontWeight="Bold"
+                                    Text="{Binding Number}" />
+                            </StackPanel>
+
+                            <Canvas ClipToBounds="True">
+                                <Border
+                                    Canvas.Top="10"
+                                    Canvas.Right="-50"
+                                    Width="120"
+                                    Height="120"
+                                    Background="#fff"
+                                    CornerRadius="60"
+                                    Opacity="0.1" />
+                                <Border
+                                    Canvas.Top="80"
+                                    Canvas.Right="-30"
+                                    Width="120"
+                                    Height="120"
+                                    Background="#fff"
+                                    CornerRadius="60"
+                                    Opacity="0.1" />
+                            </Canvas>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <!--  具体内容  -->
+        <Grid Grid.Row="2" Margin="0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <!--  左侧  -->
+            <Border
+                Margin="10,0"
+                Background="#BEBEBE"
+                CornerRadius="5"
+                Opacity="0.1" />
+            <DockPanel Margin="10,0">
+                <DockPanel
+                    Margin="10,5"
+                    DockPanel.Dock="Top"
+                    LastChildFill="False">
+                    <TextBlock
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Foreground="White"
+                        Text="待办事项" />
+                    <Button
+                        Width="30"
+                        Height="30"
+                        VerticalAlignment="Top"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource MaterialDesignFloatingActionAccentButton}">
+                        <materialDesign:PackIcon Kind="Add" />
+                    </Button>
+                </DockPanel>
+
+                <ListBox
+                    HorizontalContentAlignment="Stretch"
+                    ItemsSource="{Binding BacklogModels}"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel LastChildFill="False">
+                                <StackPanel>
+                                    <TextBlock
+                                        Margin="0,5"
+                                        FontSize="20"
+                                        FontWeight="Bold"
+                                        Text="{Binding Title}" />
+                                    <TextBlock
+                                        Margin="0,5"
+                                        Opacity="0.5"
+                                        Text="{Binding Content}" />
+                                </StackPanel>
+                                <ToggleButton DockPanel.Dock="Right" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+
+
+            <!--  右侧  -->
+            <Border
+                Grid.Column="1"
+                Margin="10,0"
+                Background="#BEBEBE"
+                CornerRadius="5"
+                Opacity="0.1" />
+
+            <DockPanel Grid.Column="1" Margin="10,0">
+                <DockPanel
+                    Margin="10,5"
+                    DockPanel.Dock="Top"
+                    LastChildFill="False">
+                    <TextBlock
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Foreground="White"
+                        Text="备忘录" />
+                    <Button
+                        Width="30"
+                        Height="30"
+                        VerticalAlignment="Top"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource MaterialDesignFloatingActionAccentButton}">
+                        <materialDesign:PackIcon Kind="Add" />
+                    </Button>
+                </DockPanel>
+
+                <ListBox
+                    Grid.Column="1"
+                    HorizontalContentAlignment="Stretch"
+                    ItemsSource="{Binding MemorModels}"
+                    ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel LastChildFill="False">
+                                <StackPanel>
+                                    <TextBlock
+                                        Margin="0,5"
+                                        FontSize="20"
+                                        FontWeight="Bold"
+                                        Text="{Binding Title}" />
+                                    <TextBlock
+                                        Margin="0,5"
+                                        Opacity="0.5"
+                                        Text="{Binding Content}" />
+                                </StackPanel>
+                                <ToggleButton DockPanel.Dock="Right" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Grid>
     </Grid>
 </UserControl>

@@ -1,5 +1,4 @@
 ﻿using CreateNotbookSystem.Common.Models.BaseModels;
-using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +8,9 @@ using System.Threading.Tasks;
 namespace CreateNotbookSystem.Common.Models
 {
     /// <summary>
-    /// 左侧菜单对象
+    /// 备忘录
     /// </summary>
-    public class MenuBarModel : CommonBaseModel
+    public class MemoModel : CommonBaseModel
     {
     }
 }
