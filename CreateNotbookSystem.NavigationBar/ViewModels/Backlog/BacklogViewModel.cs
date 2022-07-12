@@ -12,6 +12,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
 {
     public class BacklogViewModel : BindableBase
     {
+        #region 属性
         /// <summary>
         /// 显示隐藏侧边内容
         /// </summary>
@@ -44,13 +45,27 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
                 RaisePropertyChanged();
             }
         }
+        #endregion
 
-
+        #region 构造函数
         public BacklogViewModel()
         {
             OpenSideWindow = new DelegateCommand(Open);
             BacklogModels = new ObservableCollection<BacklogModel>();
-            CreateTaskBarInfo();
+            CreateTaskBar();
+        }
+
+        #endregion
+
+        #region 方法
+        private void CreateTaskBar()
+        {
+            BacklogModels.Clear();
+
+            for (int i = 0; i < 20; i++)
+            {
+                BacklogModels.Add(new BacklogModel() { Title = $"{i}", Content = "哈哈哈" });
+            }
         }
 
         /// <summary>
@@ -63,14 +78,10 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
 
         }
 
-        private void CreateTaskBarInfo()
-        {
-            BacklogModels.Clear();
+        #endregion
 
-            for (int i = 0; i < 20; i++)
-            {
-                BacklogModels.Add(new BacklogModel() { Title = $"{i}", Content = "哈哈哈" });
-            }
-        }
+
+
+
     }
 }

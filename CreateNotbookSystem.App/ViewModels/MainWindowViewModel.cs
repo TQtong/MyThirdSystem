@@ -44,6 +44,25 @@ namespace CreateNotbookSystem.App.ViewModels
             }
         }
 
+        private MenuBarModel selectedItem;
+        /// <summary>
+        /// 用户选择的菜单内容
+        /// </summary>
+        public MenuBarModel SelectedItem
+        {
+            get => selectedItem;
+            set
+            {
+                selectedItem = value;
+                RaisePropertyChanged();
+                if (selectedItem != null)
+                {
+                    Navigate(SelectedItem);
+                }
+            }
+        }
+
+
         #endregion
 
         #region 字段
@@ -59,11 +78,6 @@ namespace CreateNotbookSystem.App.ViewModels
         #endregion
 
         #region 命令
-        /// <summary>
-        /// 导航窗口命令
-        /// </summary>
-        public DelegateCommand<MenuBarModel> MenuBarCommand { get; private set; }
-
         /// <summary>
         /// 下一步
         /// </summary>
@@ -83,7 +97,6 @@ namespace CreateNotbookSystem.App.ViewModels
         public MainWindowViewModel(IRegionManager regionManager)
         {
             MenuBars = new ObservableCollection<MenuBarModel>();
-            MenuBarCommand = new DelegateCommand<MenuBarModel>(Navigat);
             GoForwardCommand = new DelegateCommand(GoForward);
             GoBackCommand = new DelegateCommand(GoBack);
             HomeCommand = new DelegateCommand(Home);
@@ -126,7 +139,7 @@ namespace CreateNotbookSystem.App.ViewModels
         /// 切换导航栏
         /// </summary>
         /// <param name="obj"></param>
-        private void Navigat(MenuBarModel obj)
+        private void Navigate(MenuBarModel obj)
         {
             if (obj == null || string.IsNullOrWhiteSpace(obj.NameSpace))
             {
@@ -172,7 +185,8 @@ namespace CreateNotbookSystem.App.ViewModels
         private void Home()
         {
             var result = MenuBars.FirstOrDefault(x => x.Title == "首页");
-            Navigat(result);
+            Navigate(result);
+            SelectedItem = null;
         }
 
         #endregion

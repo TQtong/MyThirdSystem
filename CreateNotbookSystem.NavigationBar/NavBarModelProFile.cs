@@ -19,10 +19,17 @@ namespace CreateNotbookSystem.NavigationBar
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            //左侧边栏导航
             containerRegistry.RegisterForNavigation<IndexView, IndexViewModel>();
             containerRegistry.RegisterForNavigation<BacklogView, BacklogViewModel>();
             containerRegistry.RegisterForNavigation<MemoView, MemoViewModel>();
             containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
+
+            //设置中的侧边导航栏
+            containerRegistry.RegisterForNavigation<IndividuationView, IndividuationViewModel>();
+            containerRegistry.RegisterForNavigation<SystemSettingsView, SystemSettingsViewModel>();
+            containerRegistry.RegisterForNavigation<AboutView, AboutViewModel>();
+
         }
     }
 }

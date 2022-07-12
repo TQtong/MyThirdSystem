@@ -169,12 +169,8 @@
                     <ListBox
                         x:Name="menuBar"
                         ItemContainerStyle="{StaticResource CustomListBoxItemStyle}"
-                        ItemsSource="{Binding MenuBars}">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding MenuBarCommand}" CommandParameter="{Binding ElementName=menuBar, Path=SelectedItem}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
+                        ItemsSource="{Binding MenuBars}"
+                        SelectedItem="{Binding SelectedItem}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <DockPanel Width="{Binding ActualWidth, ElementName=leftContent}">

@@ -12,7 +12,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Memo
 {
     public class MemoViewModel : BindableBase
     {
-
+        #region 属性
         /// <summary>
         /// 显示隐藏侧边内容
         /// </summary>
@@ -45,13 +45,27 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Memo
                 RaisePropertyChanged();
             }
         }
+        #endregion
 
-
+        #region 构造函数
         public MemoViewModel()
         {
             OpenSideWindow = new DelegateCommand(Open);
             MemoModels = new ObservableCollection<MemoModel>();
-            CreateTaskBarInfo();
+            CreateTaskBar();
+        }
+
+        #endregion
+
+        #region 方法
+        private void CreateTaskBar()
+        {
+            MemoModels.Clear();
+
+            for (int i = 0; i < 20; i++)
+            {
+                MemoModels.Add(new MemoModel() { Title = $"{i}", Content = "哈哈哈" });
+            }
         }
 
         /// <summary>
@@ -63,16 +77,6 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Memo
             IsRightDrawerOpen = true;
 
         }
-
-        private void CreateTaskBarInfo()
-        {
-            MemoModels.Clear();
-
-            for (int i = 0; i < 20; i++)
-            {
-                MemoModels.Add(new MemoModel() { Title = $"{i}", Content = "哈哈哈" });
-            }
-        }
-
+        #endregion
     }
 }

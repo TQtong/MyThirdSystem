@@ -11,6 +11,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
 {
     public class IndexViewModel : BindableBase
     {
+        #region 属性
         private ObservableCollection<TaskBarModel> taskBarModels;
         /// <summary>
         /// 任务栏
@@ -52,9 +53,9 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
                 RaisePropertyChanged();
             }
         }
+        #endregion
 
-
-
+        #region 构造函数
         public IndexViewModel()
         {
             TaskBarModels = new ObservableCollection<TaskBarModel>();
@@ -64,6 +65,9 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
             CreateTaskBarInfo();
         }
 
+        #endregion
+
+        #region 方法
         private void CreateTaskBarInfo()
         {
             BacklogModels.Clear();
@@ -83,6 +87,10 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
             TaskBarModels.Add(new TaskBarModel() { Color = "#FF02C6DC", Icon = "ChartLineVariant", Title = "完成比例", Number = "97%", NameSpace = "" });
             TaskBarModels.Add(new TaskBarModel() { Color = "#FFFFA000", Icon = "PlaylistStar", Title = "备忘录", Number = "4", NameSpace = "" });
         }
+
+        #endregion
+
+
 
     }
 }
