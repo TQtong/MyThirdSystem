@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreateNotbookSystem.Navigat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreateNotbookSystem.CustomControl", "CreateNotbookSystem.CustomControl\CreateNotbookSystem.CustomControl.csproj", "{C0E3BBB4-A6C6-4EEC-A1BB-7407FB0B6519}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreateNotbookSystem.Common", "CreateNotbookSystem.Common\CreateNotbookSystem.Common.csproj", "{C64D5CF9-0E17-4DD6-917F-444860AE78F5}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreateNotbookSystem.App", "CreateNotbookSystem.App\CreateNotbookSystem.App.csproj", "{1B93A0A0-008C-4191-8763-86AC05EC1DAF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CreateNotbookSystem.Service", "CreateNotbookSystem.Service\CreateNotbookSystem.Service.csproj", "{8DB7DC08-E75F-4969-B71F-FADF30764EC3}"
@@ -19,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateNotbookSystem.Common", "CreateNotbookSystem.Common\CreateNotbookSystem.Common.csproj", "{E250EACD-DF8C-4476-8FB3-B42D98D0ED69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,10 +38,6 @@ Global
 		{C0E3BBB4-A6C6-4EEC-A1BB-7407FB0B6519}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0E3BBB4-A6C6-4EEC-A1BB-7407FB0B6519}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0E3BBB4-A6C6-4EEC-A1BB-7407FB0B6519}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C64D5CF9-0E17-4DD6-917F-444860AE78F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C64D5CF9-0E17-4DD6-917F-444860AE78F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C64D5CF9-0E17-4DD6-917F-444860AE78F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C64D5CF9-0E17-4DD6-917F-444860AE78F5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1B93A0A0-008C-4191-8763-86AC05EC1DAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1B93A0A0-008C-4191-8763-86AC05EC1DAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B93A0A0-008C-4191-8763-86AC05EC1DAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -50,6 +46,10 @@ Global
 		{8DB7DC08-E75F-4969-B71F-FADF30764EC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DB7DC08-E75F-4969-B71F-FADF30764EC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DB7DC08-E75F-4969-B71F-FADF30764EC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E250EACD-DF8C-4476-8FB3-B42D98D0ED69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E250EACD-DF8C-4476-8FB3-B42D98D0ED69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E250EACD-DF8C-4476-8FB3-B42D98D0ED69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E250EACD-DF8C-4476-8FB3-B42D98D0ED69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

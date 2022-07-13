@@ -1,4 +1,5 @@
-﻿using CreateNotbookSystem.Common.Models;
+﻿using CreateNotbookSystem.Common.DbContent;
+using CreateNotbookSystem.Common.Models;
 using CreateNotbookSystem.Common.Models.Managers;
 using Prism.Commands;
 using Prism.Mvvm;

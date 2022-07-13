@@ -68,7 +68,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         #endregion
 
         #region 方法
-        private void CreateTaskBarInfo()
+                private void CreateTaskBarInfo()
         {
             BacklogModels.Clear();
             MemorModels.Clear();
@@ -87,7 +87,6 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
             TaskBarModels.Add(new TaskBarModel() { Color = "#FF02C6DC", Icon = "ChartLineVariant", Title = "完成比例", Number = "97%", NameSpace = "" });
             TaskBarModels.Add(new TaskBarModel() { Color = "#FFFFA000", Icon = "PlaylistStar", Title = "备忘录", Number = "4", NameSpace = "" });
         }
-
         #endregion
 
 
