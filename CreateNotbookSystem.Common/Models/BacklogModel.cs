@@ -12,19 +12,10 @@ namespace CreateNotbookSystem.Common.Models
     /// </summary>
     public class BacklogModel : CommonBaseModel
     {
-        private bool state;
         /// <summary>
         /// 状态：true表示完成，false表示为完成
         /// </summary>
-        public bool State
-        {
-            get => state;
-            set
-            {
-                state = value;
-                RaisePropertyChanged();
-            }
-        }
+        public bool State { get; set; }
 
     }
 }

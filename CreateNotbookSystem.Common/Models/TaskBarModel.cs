@@ -12,33 +12,15 @@ namespace CreateNotbookSystem.Common.Models
     /// </summary>
     public class TaskBarModel : CommonBaseModel
     {
-        private string color;
         /// <summary>
         /// 背景颜色
         /// </summary>
-        public string Color
-        {
-            get => color;
-            set
-            {
-                color = value;
-                RaisePropertyChanged();
-            }
-        }
+        public string Color { get; set; }
 
-        private string number;
         /// <summary>
         /// 数量
         /// </summary>
-        public string Number
-        {
-            get => number;
-            set
-            {
-                number = value;
-                RaisePropertyChanged();
-            }
-        }
+        public string Number { get; set; }
 
     }
 }

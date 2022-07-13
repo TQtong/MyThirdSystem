@@ -1,4 +1,7 @@
 ﻿using CreateNotbookSystem.Service.Context;
+using CreateNotbookSystem.Service.Repository;
+using CreateNotbookSystem.Service.Service;
+using CreateNotbookSystem.Service.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -20,13 +23,20 @@ namespace CreateNotbookSystem.Service
             {
                 var connectiongString = Configuration.GetConnectionString("create_notbook");
                 option.UseSqlServer(connectiongString);
-            });
+            }).AddUnitOfWork<MyNotbookContext>()//添加工作单元
+            .AddCustomRepository<Backlog, BacklogRepository>()//添加仓储
+            .AddCustomRepository<Memo, MemoRepository>()
+            .AddCustomRepository<User, UserRepository>();
 
+            //注册服务
+            services.AddTransient<IBacklogService, BacklogService>();
+            services.AddTransient<IMemoService, MemoService>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyToDo.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CreateNotbookSystem.Api", Version = "v1" });
             });
         }
 
@@ -39,7 +49,7 @@ namespace CreateNotbookSystem.Service
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyToDo.Api v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CreateNotbookSystem.Api v1"));
             app.UseRouting();
             app.UseAuthorization();
 
