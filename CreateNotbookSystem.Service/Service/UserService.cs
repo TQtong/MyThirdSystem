@@ -4,7 +4,7 @@ using CreateNotbookSystem.Service.UnitOfWork;
 namespace CreateNotbookSystem.Service.Service
 {
     /// <summary>
-    /// 待办事项的实现
+    /// 用户的实现
     /// </summary>
     public class UserService : IUserService
     {
@@ -42,6 +42,11 @@ namespace CreateNotbookSystem.Service.Service
             {
                 var repository = work.GetRepository<User>();
                 var user = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
+
+                if (user == null)
+                {
+                    return new ApiResponse("数据库中无该数据");
+                }
 
                 repository.Delete(user);
 
@@ -98,6 +103,11 @@ namespace CreateNotbookSystem.Service.Service
                 var repository = work.GetRepository<User>();
 
                 var user = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(model.Id));
+
+                if (user == null)
+                {
+                    return new ApiResponse("数据库中无该数据");
+                }
 
                 user.Account = model.Account;
                 user.Name = model.Name;

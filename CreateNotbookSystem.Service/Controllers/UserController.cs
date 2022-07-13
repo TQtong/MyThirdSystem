@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CreateNotbookSystem.Service.Controllers
 {
+    /// <summary>
+    /// 用户控制器
+    /// </summary>
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class UserController : Controller

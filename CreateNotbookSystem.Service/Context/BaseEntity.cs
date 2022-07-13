@@ -9,12 +9,14 @@ namespace CreateNotbookSystem.Service.Context
 {
     public class BaseEntity
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]  //设置自增
+        [Column("id")]
         public int Id { get; set; }
 
-        [Column(TypeName = "datetime2")]
+        [Column("createdDate", TypeName = "datetime2")]
         public DateTime CreatedDate { get; set; }
 
-        [Column(TypeName = "datetime2")]
+        [Column("updatedDate", TypeName = "datetime2")]
         public DateTime UpdatedDate { get; set; }
     }
 }

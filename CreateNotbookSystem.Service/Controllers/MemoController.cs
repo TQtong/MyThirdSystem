@@ -5,13 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CreateNotbookSystem.Service.Controllers
 {
+    /// <summary>
+    /// 备忘录控制器
+    /// </summary>
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class BacklogController : Controller
+    public class MemoController : Controller
     {
         private readonly IMemoService service;
 
-        public BacklogController(IMemoService service)
+        public MemoController(IMemoService service)
         {
             this.service = service;
         }

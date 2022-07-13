@@ -4,7 +4,7 @@ using CreateNotbookSystem.Service.UnitOfWork;
 namespace CreateNotbookSystem.Service.Service
 {
     /// <summary>
-    /// 待办事项的实现
+    /// 备完录的实现
     /// </summary>
     public class MemoService : IMemoService
     {
@@ -42,6 +42,11 @@ namespace CreateNotbookSystem.Service.Service
             {
                 var repository = work.GetRepository<Memo>();
                 var memo = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
+
+                if (memo == null)
+                {
+                    return new ApiResponse("数据库中无该数据");
+                }
 
                 repository.Delete(memo);
 
@@ -98,6 +103,11 @@ namespace CreateNotbookSystem.Service.Service
                 var repository = work.GetRepository<Memo>();
 
                 var memo = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(model.Id));
+
+                if (memo == null)
+                {
+                    return new ApiResponse("数据库中无该数据");
+                }
 
                 memo.Content = model.Content;
                 memo.Title = model.Title;

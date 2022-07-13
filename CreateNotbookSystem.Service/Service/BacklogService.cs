@@ -43,6 +43,11 @@ namespace CreateNotbookSystem.Service.Service
                 var repository = work.GetRepository<Backlog>();
                 var backlog = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
 
+                if (backlog == null)
+                {
+                    return new ApiResponse("数据库中无该数据");
+                }
+
                 repository.Delete(backlog);
 
                 var result = await work.SaveChangesAsync();
@@ -98,6 +103,11 @@ namespace CreateNotbookSystem.Service.Service
                 var repository = work.GetRepository<Backlog>();
 
                 var backlog = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(model.Id));
+
+                if (backlog == null)
+                {
+                    return new ApiResponse("数据库中无该数据");
+                }
 
                 backlog.Status = model.Status;
                 backlog.Content = model.Content;
