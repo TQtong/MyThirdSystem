@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CreateNotbookSystem.Common.DbContent.Dto;
+using CreateNotbookSystem.Common.Parameter;
 using CreateNotbookSystem.Service.Context;
 using CreateNotbookSystem.Service.UnitOfWork;
 
@@ -70,38 +71,6 @@ namespace CreateNotbookSystem.Service.Service
             }
         }
 
-        public async Task<ApiResponse> GetAllAsync()
-        {
-            try
-            {
-                var repository = work.GetRepository<Backlog>();
-                var backlogs = await repository.GetAllAsync();
-
-                return new ApiResponse(true, backlogs);
-
-            }
-            catch (Exception ex)
-            {
-                return new ApiResponse(ex.Message);
-            }
-        }
-
-        public async Task<ApiResponse> GetSingleAsync(int id)
-        {
-            try
-            {
-                var repository = work.GetRepository<Backlog>();
-                var backlog = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
-
-                return new ApiResponse(true, backlog);
-
-            }
-            catch (Exception ex)
-            {
-                return new ApiResponse(ex.Message);
-            }
-        }
-
         public async Task<ApiResponse> UpdateAsync(BacklogDto model)
         {
             try
@@ -138,5 +107,45 @@ namespace CreateNotbookSystem.Service.Service
                 return new ApiResponse(ex.Message);
             }
         }
+
+        public async Task<ApiResponse> GetSingleAsync(int id)
+        {
+            try
+            {
+                var repository = work.GetRepository<Backlog>();
+                var backlog = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(id));
+
+                return new ApiResponse(true, backlog);
+
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+        }
+
+        public async Task<ApiResponse> GetAllAsync(QueryParameter parameter)
+        {
+            try
+            {
+                var repository = work.GetRepository<Backlog>();
+                var backlogs = await repository.GetPagedListAsync(predicate: 
+                    x => string.IsNullOrWhiteSpace(parameter.Search) ? true : x.Title.Equals(parameter.Search),
+                    pageIndex: parameter.PageIndex,
+                    pageSize: parameter.PageSize,
+                    orderBy: source => source.OrderByDescending(t => t.CreatedDate));
+
+                return new ApiResponse(true, backlogs);
+
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+        }
+
+
+
+
     }
 }

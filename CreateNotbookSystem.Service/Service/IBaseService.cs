@@ -1,4 +1,6 @@
-﻿namespace CreateNotbookSystem.Service.Service
+﻿using CreateNotbookSystem.Common.Parameter;
+
+namespace CreateNotbookSystem.Service.Service
 {
     /// <summary>
     /// 服务操作方法基类
@@ -6,7 +8,7 @@
     /// <typeparam name="T"></typeparam>
     public interface IBaseService<T>
     {
-        Task<ApiResponse> GetAllAsync();
+        Task<ApiResponse> GetAllAsync(QueryParameter query);
 
         Task<ApiResponse> GetSingleAsync(int id);
 

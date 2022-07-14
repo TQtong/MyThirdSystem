@@ -1,4 +1,5 @@
 ﻿using CreateNotbookSystem.Common.DbContent.Dto;
+using CreateNotbookSystem.Common.Parameter;
 using CreateNotbookSystem.Service.Context;
 using CreateNotbookSystem.Service.Service;
 using CreateNotbookSystem.Service.UnitOfWork;
@@ -24,7 +25,7 @@ namespace CreateNotbookSystem.Service.Controllers
         public async Task<ApiResponse> GetSingle(int id) => await service.GetSingleAsync(id);
 
         [HttpGet]
-        public async Task<ApiResponse> GetAll() => await service.GetAllAsync();
+        public async Task<ApiResponse> GetAll([FromQuery] QueryParameter parameter) => await service.GetAllAsync(parameter);
 
         [HttpPost]
         public async Task<ApiResponse> Add([FromBody] UserDto user) => await service.AddAsync(user);
