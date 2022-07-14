@@ -39,16 +39,16 @@ namespace CreateNotbookSystem.Common.DbContent.Dto
             }
         }
 
-        private string password;
+        private string passWord;
         /// <summary>
         /// 密码
         /// </summary>
-        public string Password
+        public string PassWord
         {
-            get => password;
+            get => passWord;
             set
             {
-                password = value;
+                passWord = value;
                 OnPropertyChanged();
             }
         }

@@ -33,7 +33,7 @@ namespace CreateNotbookSystem.Service
             //注册服务
             services.AddTransient<IBacklogService, BacklogService>();
             services.AddTransient<IMemoService, MemoService>();
-            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ILoginService, LoginService>();
 
             //添加映射关系（automapper）
             var autoMapperConfig = new MapperConfiguration(configure =>
