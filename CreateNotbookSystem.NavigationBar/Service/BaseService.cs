@@ -58,7 +58,7 @@ namespace CreateNotbookSystem.NavigationBar.Service
         {
             BaseRequest request = new BaseRequest();
             request.Method = RestSharp.Method.Get;
-            request.Route = $"api/{serviceName}/Get?id={id}";
+            request.Route = $"api/{serviceName}/GetSingle?id={id}";
 
             return await client.ExecuteAsync<TEntity>(request);
         }

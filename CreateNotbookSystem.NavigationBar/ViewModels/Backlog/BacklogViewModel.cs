@@ -11,17 +11,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
 {
     public class BacklogViewModel : NavigationBaseViewModel
     {
         #region 属性
-        /// <summary>
-        /// 显示隐藏侧边内容
-        /// </summary>
-        public DelegateCommand OpenSideWindow { get; private set; }
-
         private ObservableCollection<BacklogDto> backlogModels;
         /// <summary>
         /// 待办事项
@@ -50,17 +46,63 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
                 RaisePropertyChanged();
             }
         }
+
+        private BacklogDto currentDto;
+        /// <summary>
+        /// 编辑选中/新增时对象
+        /// </summary>
+        public BacklogDto CurrentDto
+        {
+            get => currentDto;
+            set
+            {
+                currentDto = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private string search;
+        /// <summary>
+        /// 搜索条件
+        /// </summary>
+        public string Search
+        {
+            get => search;
+            set
+            {
+                search = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
         #endregion
 
         #region 字段
         private readonly IBacklogService service;
         #endregion
 
+        #region 命令
+
+        /// <summary>
+        /// 命令集合体
+        /// </summary>
+        public DelegateCommand<string> ExecuteCommand { get; private set; }
+
+        /// <summary>
+        /// 选择待办事项
+        /// </summary>
+        public DelegateCommand<BacklogDto> SelectedCommand { get; private set; }
+        #endregion
+
         #region 构造函数
         public BacklogViewModel(IBacklogService service, IContainerProvider container) : base(container)
         {
-            OpenSideWindow = new DelegateCommand(Open);
             BacklogModels = new ObservableCollection<BacklogDto>();
+
+            ExecuteCommand = new DelegateCommand<string>(Execute);
+            SelectedCommand = new DelegateCommand<BacklogDto>(Select);
+
             this.service = service;
         }
 
@@ -75,11 +117,34 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
         }
 
         /// <summary>
+        /// 命令集合体
+        /// </summary>
+        /// <param name="obj"></param>
+        private void Execute(string obj)
+        {
+            switch (obj)
+            {
+                case "新增": Add(); break;
+                case "查询": GetDataAsync(); break;
+                case "保存": Save(); break;
+            }
+        }
+
+        /// <summary>
+        /// 添加待办
+        /// </summary>
+        private void Add()
+        {
+            CurrentDto = new BacklogDto();
+            IsRightDrawerOpen = true;
+        }
+
+        /// <summary>
         /// 获取数据库中待办事项数据
         /// </summary>
         private async void GetDataAsync()
         {
-            UpDateLoading(true);
+            UpdateLoading(true);
 
 
             BacklogModels.Clear();
@@ -88,7 +153,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
             {
                 PageIndex = 0,
                 PageSize = 100,
-                Search = "string"
+                Search = Search
             });
 
             if (backlog.Status)
@@ -99,18 +164,81 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
                 }
             }
 
-            UpDateLoading(false);
-
+            UpdateLoading(false);
+            Search = null;
         }
 
         /// <summary>
-        /// 显示隐藏侧边内容
+        /// 选择待办事项数据
         /// </summary>
-        private void Open()
+        /// <param name="obj"></param>
+        private async void Select(BacklogDto obj)
         {
+            try
+            {
+                UpdateLoading(true);
+                var backlog = await service.GetFirstOfDefaultAsync(obj.Id);
+                if (backlog.Status)
+                {
+                    CurrentDto = backlog.Result;
+                    IsRightDrawerOpen = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                UpdateLoading(false);
+            }
+        }
 
-            IsRightDrawerOpen = true;
+        private async void Save()
+        {
+            if (string.IsNullOrWhiteSpace(CurrentDto.Title) ||
+                string.IsNullOrWhiteSpace(CurrentDto.Content))
+            {
+                return;
+            }
 
+            UpdateLoading(true);
+
+            try
+            {
+                if (CurrentDto.Id > 0)
+                {
+                    var result = await service.UpdateAsync(CurrentDto);
+                    if (result.Status)
+                    {
+                        var backlog = BacklogModels.FirstOrDefault(t => t.Id == CurrentDto.Id);
+                        if (backlog != null)
+                        {
+                            backlog.Title = CurrentDto.Title;
+                            backlog.Content = CurrentDto.Content;
+                            backlog.Status = CurrentDto.Status;
+                        }
+                    }
+                    IsRightDrawerOpen = false;
+                }
+                else
+                {
+                    var result = await service.AddAsync(CurrentDto);
+                    if (result.Status)
+                    {
+                        BacklogModels.Add(result.Result);
+                        IsRightDrawerOpen = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                UpdateLoading(false);
+            }
         }
 
         #endregion

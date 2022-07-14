@@ -55,7 +55,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels
         /// 通知窗口的状态
         /// </summary>
         /// <param name="IsOpen"></param>
-        public void UpDateLoading(bool IsOpen)
+        public void UpdateLoading(bool IsOpen)
         {
             aggregator.UpdateLoading(new UpdateModel()
             {
