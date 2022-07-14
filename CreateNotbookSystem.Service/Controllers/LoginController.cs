@@ -18,9 +18,9 @@ namespace CreateNotbookSystem.Service.Controllers
             this.service = service;
         }
 
-        [HttpPost]
-        public async Task<ApiResponse> Login([FromBody] UserDto param) =>
-            await service.LoginAsync(param.Account, param.PassWord);
+        [HttpGet]
+        public async Task<ApiResponse> Login(string account, string password) =>
+            await service.LoginAsync(account, password);
 
         [HttpPost]
         public async Task<ApiResponse> Resgiter([FromBody] UserDto param) =>
