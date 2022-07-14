@@ -1,4 +1,6 @@
-﻿using CreateNotbookSystem.Common.Models;
+﻿using CreateNotbookSystem.Common.DbContent.Dto;
+using CreateNotbookSystem.Common.Models;
+using CreateNotbookSystem.NavigationBar.Service;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -18,11 +20,11 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
         /// </summary>
         public DelegateCommand OpenSideWindow { get; private set; }
 
-        private ObservableCollection<BacklogModel> backlogModels;
+        private ObservableCollection<BacklogDto> backlogModels;
         /// <summary>
         /// 待办事项
         /// </summary>
-        public ObservableCollection<BacklogModel> BacklogModels
+        public ObservableCollection<BacklogDto> BacklogModels
         {
             get => backlogModels;
             set
@@ -33,6 +35,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
         }
 
         private bool isRightDrawerOpen;
+
         /// <summary>
         /// 是否显示侧边栏
         /// </summary>
@@ -47,24 +50,39 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
         }
         #endregion
 
+        #region 字段
+        private readonly IBacklogService service;
+        #endregion
+
         #region 构造函数
-        public BacklogViewModel()
+        public BacklogViewModel(IBacklogService service)
         {
             OpenSideWindow = new DelegateCommand(Open);
-            BacklogModels = new ObservableCollection<BacklogModel>();
+            BacklogModels = new ObservableCollection<BacklogDto>();
+            this.service = service;
             CreateTaskBar();
         }
 
         #endregion
 
         #region 方法
-        private void CreateTaskBar()
+        private async void CreateTaskBar()
         {
             BacklogModels.Clear();
 
-            for (int i = 0; i < 20; i++)
+            var backlog = await service.GetAllAsync(new Common.Parameter.QueryParameter()
             {
-                BacklogModels.Add(new BacklogModel() { Title = $"{i}", Content = "哈哈哈" });
+                PageIndex = 0,
+                PageSize = 100,
+                Search = "string"
+            });
+
+            if (backlog.Status)
+            {
+                foreach (var item in backlog.Result.Items)
+                {
+                    BacklogModels.Add(item);
+                }
             }
         }
 

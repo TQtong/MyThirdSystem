@@ -1,4 +1,8 @@
 ﻿using CreateNotbookSystem.App.Views;
+using CreateNotbookSystem.CustomControl;
+using CreateNotbookSystem.NavigationBar;
+using CreateNotbookSystem.NavigationBar.Service;
+using DryIoc;
 using Prism.DryIoc;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -32,15 +36,24 @@ namespace CreateNotbookSystem.App
         /// <param name="containerRegistry"></param>
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            //注册HttpRestClient
+            //先拿到指定容器后注册服务，并对构造函数设置一个默认值
+            containerRegistry.GetContainer().Register<HttpRestClient>(made: Parameters.Of.Type<string>(serviceKey: "webUrl"));
+            //设置根路径
+            containerRegistry.GetContainer().RegisterInstance(@"http://localhost:5296/", serviceKey: "webUrl");
+
+            //注册客户端服务
+            containerRegistry.Register<IBacklogService, BacklogService>();
         }
 
         /// <summary>
         /// 模块引入
         /// </summary>
         /// <returns></returns>
-        protected override IModuleCatalog CreateModuleCatalog()
+        protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
-            return new ConfigurationModuleCatalog();
+            moduleCatalog.AddModule<NavBarModelProFile>();
+            moduleCatalog.AddModule<CustomModelProFile>();
         }
     }
 }

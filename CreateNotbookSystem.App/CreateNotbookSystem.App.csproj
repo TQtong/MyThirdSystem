@@ -24,6 +24,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CreateNotbookSystem.Common\CreateNotbookSystem.Common.csproj" />
+    <ProjectReference Include="..\CreateNotbookSystem.CustomControl\CreateNotbookSystem.CustomControl.csproj" />
+    <ProjectReference Include="..\CreateNotbookSystem.NavigationBar\CreateNotbookSystem.NavigationBar.csproj" />
   </ItemGroup>
 
   <ItemGroup>
