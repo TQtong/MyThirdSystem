@@ -24,6 +24,6 @@ namespace CreateNotbookSystem.Common.Parameter
         /// <summary>
         /// 查询的条件（id、title等）
         /// </summary>
-        public string Search { get; set; }
+        public string? Search { get; set; }
     }
 }
