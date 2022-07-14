@@ -2,7 +2,9 @@
 using CreateNotbookSystem.Common.Models;
 using CreateNotbookSystem.NavigationBar.Service;
 using Prism.Commands;
+using Prism.Ioc;
 using Prism.Mvvm;
+using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
 {
-    public class BacklogViewModel : BindableBase
+    public class BacklogViewModel : NavigationBaseViewModel
     {
         #region 属性
         /// <summary>
@@ -55,19 +57,31 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
         #endregion
 
         #region 构造函数
-        public BacklogViewModel(IBacklogService service)
+        public BacklogViewModel(IBacklogService service, IContainerProvider container) : base(container)
         {
             OpenSideWindow = new DelegateCommand(Open);
             BacklogModels = new ObservableCollection<BacklogDto>();
             this.service = service;
-            CreateTaskBar();
         }
+
 
         #endregion
 
         #region 方法
-        private async void CreateTaskBar()
+        public override void OnNavigatedTo(NavigationContext navigationContext)
         {
+            base.OnNavigatedTo(navigationContext);
+            GetDataAsync();
+        }
+
+        /// <summary>
+        /// 获取数据库中待办事项数据
+        /// </summary>
+        private async void GetDataAsync()
+        {
+            UpDateLoading(true);
+
+
             BacklogModels.Clear();
 
             var backlog = await service.GetAllAsync(new Common.Parameter.QueryParameter()
@@ -84,6 +98,9 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
                     BacklogModels.Add(item);
                 }
             }
+
+            UpDateLoading(false);
+
         }
 
         /// <summary>

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CreateNotbookSystem.CustomControl.Views;
+using CreateNotbookSystem.NavigationBar.Extensions;
+using Prism.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +22,20 @@ namespace CreateNotbookSystem.App.Views
     /// </summary>
     public partial class MainWindowView : Window
     {
-        public MainWindowView()
+        public MainWindowView(IEventAggregator aggregator)
         {
             InitializeComponent();
+
+            //注册等待消息窗口
+            aggregator.Resgiter(arg =>
+            {
+                dialogTheme.IsOpen = arg.IsOpen;
+
+                if (dialogTheme.IsOpen)
+                {
+                    dialogTheme.DialogContent = new ProgressView();
+                }
+            });
 
             //窗口最小化
             btnMin.Click += (s, e) =>
