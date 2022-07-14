@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using CreateNotbookSystem.Interface;
+    using CreateNotbookSystem.Common;
     using Microsoft.EntityFrameworkCore;
 
     public static class IQueryablePageListExtensions

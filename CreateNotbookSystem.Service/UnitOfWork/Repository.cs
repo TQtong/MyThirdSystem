@@ -13,7 +13,7 @@ namespace CreateNotbookSystem.Service.UnitOfWork
     using Microsoft.EntityFrameworkCore.Metadata;
     using Microsoft.EntityFrameworkCore.Query;
     using Microsoft.EntityFrameworkCore.ChangeTracking;
-    using CreateNotbookSystem.Interface;
+    using CreateNotbookSystem.Common;
 
     /// <summary>
     /// Represents a default generic repository implements the <see cref="IRepository{TEntity}"/> interface.
@@ -938,5 +938,6 @@ namespace CreateNotbookSystem.Service.UnitOfWork
         {
             _dbContext.Entry(entity).State = state;
         }
+
     }
 }

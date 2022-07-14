@@ -1,4 +1,6 @@
-﻿using CreateNotbookSystem.Service.Context;
+﻿using AutoMapper;
+using CreateNotbookSystem.Common.DbContent.Dto;
+using CreateNotbookSystem.Service.Context;
 using CreateNotbookSystem.Service.UnitOfWork;
 
 namespace CreateNotbookSystem.Service.Service
@@ -9,23 +11,27 @@ namespace CreateNotbookSystem.Service.Service
     public class BacklogService : IBacklogService
     {
         private readonly IUnitOfWork work;
+        private readonly IMapper mapper;
 
-        public BacklogService(IUnitOfWork work)
+        public BacklogService(IUnitOfWork work, IMapper mapper)
         {
             this.work = work;
+            this.mapper = mapper;
         }
 
-        public async Task<ApiResponse> AddAsync(Backlog model)
+        public async Task<ApiResponse> AddAsync(BacklogDto model)
         {
             try
             {
+                var backlog = mapper.Map<Backlog>(model);
+
                 var repository = work.GetRepository<Backlog>();
-                await repository.InsertAsync(model);
+                await repository.InsertAsync(backlog);
 
                 var result = await work.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return new ApiResponse(true, model);
+                    return new ApiResponse(true, backlog);
                 }
                 return new ApiResponse("添加数据失败");
             }
@@ -96,31 +102,33 @@ namespace CreateNotbookSystem.Service.Service
             }
         }
 
-        public async Task<ApiResponse> UpdateAsync(Backlog model)
+        public async Task<ApiResponse> UpdateAsync(BacklogDto model)
         {
             try
             {
+                var backlog = mapper.Map<Backlog>(model);
+
                 var repository = work.GetRepository<Backlog>();
 
-                var backlog = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(model.Id));
+                var backlogDb = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(backlog.Id));
 
-                if (backlog == null)
+                if (backlogDb == null)
                 {
                     return new ApiResponse("数据库中无该数据");
                 }
 
-                backlog.Status = model.Status;
-                backlog.Content = model.Content;
-                backlog.Title = model.Title;
-                backlog.UpdatedDate = DateTime.Now;
+                backlogDb.Status = backlog.Status;
+                backlogDb.Content = backlog.Content;
+                backlogDb.Title = backlog.Title;
+                backlogDb.UpdatedDate = DateTime.Now;
 
-                repository.Update(backlog);
+                repository.Update(backlogDb);
 
                 var result = await work.SaveChangesAsync();
 
                 if (result > 0)
                 {
-                    return new ApiResponse(true, backlog);
+                    return new ApiResponse(true, backlogDb);
                 }
                 return new ApiResponse("更新数据失败");
             }

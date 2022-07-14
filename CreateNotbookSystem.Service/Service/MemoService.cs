@@ -1,4 +1,6 @@
-﻿using CreateNotbookSystem.Service.Context;
+﻿using AutoMapper;
+using CreateNotbookSystem.Common.DbContent.Dto;
+using CreateNotbookSystem.Service.Context;
 using CreateNotbookSystem.Service.UnitOfWork;
 
 namespace CreateNotbookSystem.Service.Service
@@ -9,18 +11,21 @@ namespace CreateNotbookSystem.Service.Service
     public class MemoService : IMemoService
     {
         private readonly IUnitOfWork work;
+        private readonly IMapper mapper;
 
-        public MemoService(IUnitOfWork work)
+        public MemoService(IUnitOfWork work, IMapper mapper)
         {
             this.work = work;
+            this.mapper = mapper;
         }
 
-        public async Task<ApiResponse> AddAsync(Memo model)
+        public async Task<ApiResponse> AddAsync(MemoDto model)
         {
             try
             {
+                var memo = mapper.Map<Memo>(model);
                 var repository = work.GetRepository<Memo>();
-                await repository.InsertAsync(model);
+                await repository.InsertAsync(memo);
 
                 var result = await work.SaveChangesAsync();
                 if (result > 0)
@@ -96,30 +101,31 @@ namespace CreateNotbookSystem.Service.Service
             }
         }
 
-        public async Task<ApiResponse> UpdateAsync(Memo model)
+        public async Task<ApiResponse> UpdateAsync(MemoDto model)
         {
             try
             {
+                var memo = mapper.Map<Memo>(model);
                 var repository = work.GetRepository<Memo>();
 
-                var memo = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(model.Id));
+                var memoDb = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(memo.Id));
 
-                if (memo == null)
+                if (memoDb == null)
                 {
                     return new ApiResponse("数据库中无该数据");
                 }
 
-                memo.Content = model.Content;
-                memo.Title = model.Title;
-                memo.UpdatedDate = DateTime.Now;
+                memoDb.Content = memo.Content;
+                memoDb.Title = memo.Title;
+                memoDb.UpdatedDate = DateTime.Now;
 
-                repository.Update(memo);
+                repository.Update(memoDb);
 
                 var result = await work.SaveChangesAsync();
 
                 if (result > 0)
                 {
-                    return new ApiResponse(true, memo);
+                    return new ApiResponse(true, memoDb);
                 }
                 return new ApiResponse("更新数据失败");
             }

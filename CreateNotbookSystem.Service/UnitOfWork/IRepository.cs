@@ -9,7 +9,7 @@
     using Microsoft.EntityFrameworkCore.Query;
     using Microsoft.EntityFrameworkCore.ChangeTracking;
     using Microsoft.EntityFrameworkCore;
-    using CreateNotbookSystem.Interface;
+    using CreateNotbookSystem.Common;
 
     /// <summary>
     /// Defines the interfaces for generic repository.

@@ -1,4 +1,5 @@
-﻿using CreateNotbookSystem.Service.Context;
+﻿using CreateNotbookSystem.Common.DbContent.Dto;
+using CreateNotbookSystem.Service.Context;
 using CreateNotbookSystem.Service.Service;
 using CreateNotbookSystem.Service.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
@@ -26,10 +27,10 @@ namespace CreateNotbookSystem.Service.Controllers
         public async Task<ApiResponse> GetAll() => await service.GetAllAsync();
 
         [HttpPost]
-        public async Task<ApiResponse> Add([FromBody] Backlog backlog) => await service.AddAsync(backlog);
+        public async Task<ApiResponse> Add([FromBody] BacklogDto backlog) => await service.AddAsync(backlog);
 
         [HttpPost]
-        public async Task<ApiResponse> Update([FromBody] Backlog backlog) => await service.UpdateAsync(backlog);
+        public async Task<ApiResponse> Update([FromBody] BacklogDto backlog) => await service.UpdateAsync(backlog);
 
         [HttpDelete]
         public async Task<ApiResponse> Delete(int id) => await service.DeleteAsync(id);

@@ -1,4 +1,5 @@
-﻿using CreateNotbookSystem.Service.Context;
+﻿using CreateNotbookSystem.Common.DbContent.Dto;
+using CreateNotbookSystem.Service.Context;
 using CreateNotbookSystem.Service.Service;
 using CreateNotbookSystem.Service.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
@@ -26,10 +27,10 @@ namespace CreateNotbookSystem.Service.Controllers
         public async Task<ApiResponse> GetAll() => await service.GetAllAsync();
 
         [HttpPost]
-        public async Task<ApiResponse> Add([FromBody] Memo memo) => await service.AddAsync(memo);
+        public async Task<ApiResponse> Add([FromBody] MemoDto memo) => await service.AddAsync(memo);
 
         [HttpPost]
-        public async Task<ApiResponse> Update([FromBody] Memo memo) => await service.UpdateAsync(memo);
+        public async Task<ApiResponse> Update([FromBody] MemoDto memo) => await service.UpdateAsync(memo);
 
         [HttpDelete]
         public async Task<ApiResponse> Delete(int id) => await service.DeleteAsync(id);

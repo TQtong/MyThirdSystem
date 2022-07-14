@@ -1,4 +1,4 @@
-﻿namespace CreateNotbookSystem.Interface
+﻿namespace CreateNotbookSystem.Common
 {
 
     using System.Collections.Generic;

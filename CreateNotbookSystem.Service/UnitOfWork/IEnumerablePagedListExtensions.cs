@@ -1,6 +1,6 @@
 ﻿namespace CreateNotbookSystem.Service.UnitOfWork
 {
-    using CreateNotbookSystem.Interface;
+    using CreateNotbookSystem.Common;
     using System;
     using System.Collections.Generic;
 

@@ -1,4 +1,6 @@
-﻿using CreateNotbookSystem.Service.Context;
+﻿using AutoMapper;
+using CreateNotbookSystem.Common.DbContent.Dto;
+using CreateNotbookSystem.Service.Context;
 using CreateNotbookSystem.Service.UnitOfWork;
 
 namespace CreateNotbookSystem.Service.Service
@@ -9,23 +11,27 @@ namespace CreateNotbookSystem.Service.Service
     public class UserService : IUserService
     {
         private readonly IUnitOfWork work;
+        private readonly IMapper mapper;
 
-        public UserService(IUnitOfWork work)
+        public UserService(IUnitOfWork work, IMapper mapper)
         {
             this.work = work;
+            this.mapper = mapper;
         }
 
-        public async Task<ApiResponse> AddAsync(User model)
+        public async Task<ApiResponse> AddAsync(UserDto model)
         {
             try
             {
+                var user = mapper.Map<User>(model);
+
                 var repository = work.GetRepository<User>();
-                await repository.InsertAsync(model);
+                await repository.InsertAsync(user);
 
                 var result = await work.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return new ApiResponse(true, model);
+                    return new ApiResponse(true, user);
                 }
                 return new ApiResponse("添加数据失败");
             }
@@ -96,31 +102,33 @@ namespace CreateNotbookSystem.Service.Service
             }
         }
 
-        public async Task<ApiResponse> UpdateAsync(User model)
+        public async Task<ApiResponse> UpdateAsync(UserDto model)
         {
             try
             {
+                var user = mapper.Map<User>(model);
+
                 var repository = work.GetRepository<User>();
 
-                var user = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(model.Id));
+                var userDb = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id.Equals(user.Id));
 
-                if (user == null)
+                if (userDb == null)
                 {
                     return new ApiResponse("数据库中无该数据");
                 }
 
-                user.Account = model.Account;
-                user.Name = model.Name;
-                user.Password = model.Password;
-                user.UpdatedDate = DateTime.Now;
+                userDb.Account = user.Account;
+                userDb.Name = user.Name;
+                userDb.Password = user.Password;
+                userDb.UpdatedDate = DateTime.Now;
 
-                repository.Update(user);
+                repository.Update(userDb);
 
                 var result = await work.SaveChangesAsync();
 
                 if (result > 0)
                 {
-                    return new ApiResponse(true, user);
+                    return new ApiResponse(true, userDb);
                 }
                 return new ApiResponse("更新数据失败");
             }

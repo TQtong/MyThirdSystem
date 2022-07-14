@@ -1,4 +1,6 @@
-﻿using CreateNotbookSystem.Service.Context;
+﻿using AutoMapper;
+using CreateNotbookSystem.Service.Context;
+using CreateNotbookSystem.Service.Extensions;
 using CreateNotbookSystem.Service.Repository;
 using CreateNotbookSystem.Service.Service;
 using CreateNotbookSystem.Service.UnitOfWork;
@@ -33,6 +35,14 @@ namespace CreateNotbookSystem.Service
             services.AddTransient<IMemoService, MemoService>();
             services.AddTransient<IUserService, UserService>();
 
+            //添加映射关系（automapper）
+            var autoMapperConfig = new MapperConfiguration(configure =>
+            {
+                configure.AddProfile(new AutoMapperProFile());
+            });
+            services.AddSingleton(autoMapperConfig.CreateMapper());
+
+            //添加控制器
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
