@@ -20,18 +20,18 @@ namespace CreateNotbookSystem.Service.Controllers
         }
 
         [HttpGet]
-        public async Task<ApiResponse> GetGetSing(int id) => await service.GetSingleAsync(id);
+        public async Task<ApiResponse> GetSingle(int id) => await service.GetSingleAsync(id);
 
         [HttpGet]
         public async Task<ApiResponse> GetAll() => await service.GetAllAsync();
 
         [HttpPost]
-        public async Task<ApiResponse> Add(Backlog backlog) => await service.AddAsync(backlog);
+        public async Task<ApiResponse> Add([FromBody] Backlog backlog) => await service.AddAsync(backlog);
 
         [HttpPost]
+        public async Task<ApiResponse> Update([FromBody] Backlog backlog) => await service.UpdateAsync(backlog);
+
+        [HttpDelete]
         public async Task<ApiResponse> Delete(int id) => await service.DeleteAsync(id);
-
-        [HttpPost]
-        public async Task<ApiResponse> Update(Backlog backlog) => await service.UpdateAsync(backlog);
     }
 }
