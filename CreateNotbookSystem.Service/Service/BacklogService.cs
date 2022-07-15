@@ -144,8 +144,30 @@ namespace CreateNotbookSystem.Service.Service
             }
         }
 
+        /// <summary>
+        /// 带状态值的查询
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public async Task<ApiResponse> GetAllAsync(BacklogQueryParameter parameter)
+        {
+            try
+            {
+                var repository = work.GetRepository<Backlog>();
+                var backlogs = await repository.GetPagedListAsync(predicate:
+                    x => (string.IsNullOrWhiteSpace(parameter.Search) ? true : x.Title.Equals(parameter.Search))
+                    && (parameter == null ? true : x.Status.Equals(parameter.Status)),
+                    pageIndex: parameter.PageIndex,
+                    pageSize: parameter.PageSize,
+                    orderBy: source => source.OrderByDescending(t => t.CreatedDate));
 
+                return new ApiResponse(true, backlogs);
 
-
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(ex.Message);
+            }
+        }
     }
 }

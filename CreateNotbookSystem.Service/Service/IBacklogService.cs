@@ -1,4 +1,5 @@
 ﻿using CreateNotbookSystem.Common.DbContent.Dto;
+using CreateNotbookSystem.Common.Parameter;
 using CreateNotbookSystem.Service.Context;
 
 namespace CreateNotbookSystem.Service.Service
@@ -8,5 +9,6 @@ namespace CreateNotbookSystem.Service.Service
     /// </summary>
     public interface IBacklogService : IBaseService<BacklogDto>
     {
+        Task<ApiResponse> GetAllAsync(BacklogQueryParameter query);
     }
 }

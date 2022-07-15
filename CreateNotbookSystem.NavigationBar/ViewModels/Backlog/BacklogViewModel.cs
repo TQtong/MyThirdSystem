@@ -172,11 +172,12 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
 
             int? status = SelectedIndex == 0 ? null : SelectedIndex == 2 ? 1 : 0;
 
-            var backlog = await service.GetAllAsync(new Common.Parameter.QueryParameter()
+            var backlog = await service.GetAllFilterAsync(new Common.Parameter.BacklogQueryParameter()
             {
                 PageIndex = 0,
                 PageSize = 100,
-                Search = Search
+                Search = Search,
+                Status = status
             });
 
             if (backlog.Status)

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CreateNotbookSystem.Common.Parameter
 {
-    internal class BacklogQueryParameter
+    public class BacklogQueryParameter : QueryParameter
     {
+        public int? Status { get; set; }
     }
 }

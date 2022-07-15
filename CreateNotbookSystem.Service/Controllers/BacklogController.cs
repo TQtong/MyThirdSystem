@@ -25,7 +25,7 @@ namespace CreateNotbookSystem.Service.Controllers
         public async Task<ApiResponse> GetSingle(int id) => await service.GetSingleAsync(id);
 
         [HttpGet]
-        public async Task<ApiResponse> GetAll([FromQuery] QueryParameter parameter) => await service.GetAllAsync(parameter);
+        public async Task<ApiResponse> GetAll([FromQuery] BacklogQueryParameter parameter) => await service.GetAllAsync(parameter);
 
         [HttpPost]
         public async Task<ApiResponse> Add([FromBody] BacklogDto backlog) => await service.AddAsync(backlog);

@@ -1,4 +1,7 @@
-﻿using CreateNotbookSystem.Common.DbContent.Dto;
+﻿using CreateNotbookSystem.Common;
+using CreateNotbookSystem.Common.Configurations;
+using CreateNotbookSystem.Common.DbContent.Dto;
+using CreateNotbookSystem.Common.Parameter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +12,6 @@ namespace CreateNotbookSystem.NavigationBar.Service
 {
     public interface IBacklogService : IBaseService<BacklogDto>
     {
+        Task<ApiResponse<PagedList<BacklogDto>>> GetAllFilterAsync (BacklogQueryParameter parameter);
     }
 }
