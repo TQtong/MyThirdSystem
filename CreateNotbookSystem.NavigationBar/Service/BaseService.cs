@@ -27,7 +27,7 @@ namespace CreateNotbookSystem.NavigationBar.Service
         public async Task<ApiResponse<TEntity>> AddAsync(TEntity entity)
         {
             BaseRequest request = new BaseRequest();
-            request.Method = RestSharp.Method.Get;
+            request.Method = RestSharp.Method.Post;
             request.Route = $"api/{serviceName}/Add";
             request.Parameter = entity;
 

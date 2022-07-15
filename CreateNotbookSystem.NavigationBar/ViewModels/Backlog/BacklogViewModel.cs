@@ -93,6 +93,11 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
         /// 选择待办事项
         /// </summary>
         public DelegateCommand<BacklogDto> SelectedCommand { get; private set; }
+
+        /// <summary>
+        /// 删除选中的待办事项
+        /// </summary>
+        public DelegateCommand<BacklogDto> DeletedCommand { get; private set; }
         #endregion
 
         #region 构造函数
@@ -102,6 +107,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
 
             ExecuteCommand = new DelegateCommand<string>(Execute);
             SelectedCommand = new DelegateCommand<BacklogDto>(Select);
+            DeletedCommand = new DelegateCommand<BacklogDto>(Delete);
 
             this.service = service;
         }
@@ -129,6 +135,8 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
                 case "保存": Save(); break;
             }
         }
+
+
 
         /// <summary>
         /// 添加待办
@@ -238,6 +246,20 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
             finally
             {
                 UpdateLoading(false);
+            }
+        }
+
+        /// <summary>
+        /// 删除选中的待办事项
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        private async void Delete(BacklogDto obj)
+        {
+            var result = await service.DeleteAsync(obj.Id);
+            if (result.Status)
+            {
+                var backlog = BacklogModels.FirstOrDefault(t => t.Id == obj.Id);
+                BacklogModels.Remove(backlog);
             }
         }
 

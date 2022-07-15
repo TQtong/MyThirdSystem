@@ -1,6 +1,8 @@
 ﻿using CreateNotbookSystem.Common.Configurations;
+using CreateNotbookSystem.Common.DbContent.Dto;
 using Newtonsoft.Json;
 using RestSharp;
+using RestSharp.Serializers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +57,7 @@ namespace CreateNotbookSystem.NavigationBar.Service
 
             if (baseRequest.Parameter != null)
             {
-                request.AddObject(baseRequest.Parameter);
+                request.AddJsonBody(baseRequest.Parameter);
             }
 
             var response = await client.ExecuteAsync(request);
