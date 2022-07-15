@@ -156,7 +156,7 @@ namespace CreateNotbookSystem.Service.Service
                 var repository = work.GetRepository<Backlog>();
                 var backlogs = await repository.GetPagedListAsync(predicate:
                     x => (string.IsNullOrWhiteSpace(parameter.Search) ? true : x.Title.Equals(parameter.Search))
-                    && (parameter == null ? true : x.Status.Equals(parameter.Status)),
+                   && (parameter.Status == null ? true : x.Status.Equals(parameter.Status)),
                     pageIndex: parameter.PageIndex,
                     pageSize: parameter.PageSize,
                     orderBy: source => source.OrderByDescending(t => t.CreatedDate));

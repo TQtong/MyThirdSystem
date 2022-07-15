@@ -18,16 +18,16 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
     public class BacklogViewModel : NavigationBaseViewModel
     {
         #region 属性
-        private ObservableCollection<BacklogDto> backlogModels;
+        private ObservableCollection<BacklogDto> backlogs;
         /// <summary>
         /// 待办事项
         /// </summary>
-        public ObservableCollection<BacklogDto> BacklogModels
+        public ObservableCollection<BacklogDto> Backlogs
         {
-            get => backlogModels;
+            get => backlogs;
             set
             {
-                backlogModels = value;
+                backlogs = value;
                 RaisePropertyChanged();
             }
         }
@@ -117,7 +117,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
         #region 构造函数
         public BacklogViewModel(IBacklogService service, IContainerProvider container) : base(container)
         {
-            BacklogModels = new ObservableCollection<BacklogDto>();
+            Backlogs = new ObservableCollection<BacklogDto>();
 
             ExecuteCommand = new DelegateCommand<string>(Execute);
             SelectedCommand = new DelegateCommand<BacklogDto>(Select);
@@ -168,7 +168,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
         {
             UpdateLoading(true);
 
-            BacklogModels.Clear();
+            Backlogs.Clear();
 
             int? status = SelectedIndex == 0 ? null : SelectedIndex == 2 ? 1 : 0;
 
@@ -184,7 +184,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
             {
                 foreach (var item in backlog.Result.Items)
                 {
-                    BacklogModels.Add(item);
+                    Backlogs.Add(item);
                 }
             }
 
@@ -235,7 +235,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
                     var result = await service.UpdateAsync(CurrentDto);
                     if (result.Status)
                     {
-                        var backlog = BacklogModels.FirstOrDefault(t => t.Id == CurrentDto.Id);
+                        var backlog = Backlogs.FirstOrDefault(t => t.Id == CurrentDto.Id);
                         if (backlog != null)
                         {
                             backlog.Title = CurrentDto.Title;
@@ -250,7 +250,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
                     var result = await service.AddAsync(CurrentDto);
                     if (result.Status)
                     {
-                        BacklogModels.Add(result.Result);
+                        Backlogs.Add(result.Result);
                         IsRightDrawerOpen = false;
                     }
                 }
@@ -274,15 +274,14 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
             var result = await service.DeleteAsync(obj.Id);
             if (result.Status)
             {
-                var backlog = BacklogModels.FirstOrDefault(t => t.Id == obj.Id);
-                BacklogModels.Remove(backlog);
+                var backlog = Backlogs.FirstOrDefault(t => t.Id == obj.Id);
+                if (backlog != null)
+                {
+                    Backlogs.Remove(backlog);
+                }
             }
         }
 
         #endregion
-
-
-
-
     }
 }
