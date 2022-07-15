@@ -36,7 +36,10 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <materialDesign:DialogHost DialogTheme="Inherit" Identifier="RootDialog" x:Name="dialogTheme">
+    <materialDesign:DialogHost
+        x:Name="dialogTheme"
+        DialogTheme="Inherit"
+        Identifier="Root">
 
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding IsChecked}">
 

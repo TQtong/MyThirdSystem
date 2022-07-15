@@ -2,6 +2,7 @@
 using CreateNotbookSystem.App.Views;
 using CreateNotbookSystem.CustomControl;
 using CreateNotbookSystem.NavigationBar;
+using CreateNotbookSystem.NavigationBar.Commo;
 using CreateNotbookSystem.NavigationBar.Service;
 using DryIoc;
 using Prism.DryIoc;
@@ -46,6 +47,9 @@ namespace CreateNotbookSystem.App
             //注册客户端服务
             containerRegistry.Register<IBacklogService, BacklogService>();
             containerRegistry.Register<IMemoService, MemoService>();
+
+            //注册自定义弹窗服务
+            containerRegistry.Register<IDialogHostService, DialogHostService>();
         }
 
         /// <summary>

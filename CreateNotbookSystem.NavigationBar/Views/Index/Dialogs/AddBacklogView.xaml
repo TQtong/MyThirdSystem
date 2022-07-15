@@ -48,6 +48,7 @@
                 DockPanel.Dock="Top"
                 Text="{Binding Model.Content}"
                 TextWrapping="Wrap" />
+
         </DockPanel>
 
         <StackPanel

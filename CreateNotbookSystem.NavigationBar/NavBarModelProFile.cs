@@ -1,8 +1,10 @@
-﻿using CreateNotbookSystem.NavigationBar.ViewModels.Backlog;
+﻿using CreateNotbookSystem.NavigationBar.ViewModels;
+using CreateNotbookSystem.NavigationBar.ViewModels.Backlog;
 using CreateNotbookSystem.NavigationBar.ViewModels.Index;
 using CreateNotbookSystem.NavigationBar.ViewModels.Index.Dialogs;
 using CreateNotbookSystem.NavigationBar.ViewModels.Memo;
 using CreateNotbookSystem.NavigationBar.ViewModels.Settings;
+using CreateNotbookSystem.NavigationBar.Views;
 using CreateNotbookSystem.NavigationBar.Views.Backlog;
 using CreateNotbookSystem.NavigationBar.Views.Index;
 using CreateNotbookSystem.NavigationBar.Views.Index.Dialogs;
@@ -32,9 +34,10 @@ namespace CreateNotbookSystem.NavigationBar
             containerRegistry.RegisterForNavigation<SystemSettingsView, SystemSettingsViewModel>();
             containerRegistry.RegisterForNavigation<AboutView, AboutViewModel>();
 
-            //注册弹窗
-            containerRegistry.RegisterDialog<AddBacklogView, AddBacklogViewModel>();
-            containerRegistry.RegisterDialog<AddMemoView, AddMemoViewModel>();
+            //注册弹窗（自定义弹窗，只要添加到容器里就行，不管用什么方法）
+            containerRegistry.RegisterForNavigation<AddBacklogView, AddBacklogViewModel>();
+            containerRegistry.RegisterForNavigation<AddMemoView, AddMemoViewModel>();
+            containerRegistry.RegisterForNavigation<MessageView, MessageViewModel>();
         }
     }
 }

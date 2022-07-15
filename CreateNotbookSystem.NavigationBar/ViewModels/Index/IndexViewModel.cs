@@ -1,4 +1,5 @@
 ﻿using CreateNotbookSystem.Common.Models;
+using CreateNotbookSystem.NavigationBar.Commo;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -62,7 +63,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// <summary>
         /// 弹窗接口
         /// </summary>
-        private readonly IDialogService service;
+        private readonly IDialogHostService service;
         #endregion
 
         #region 命令
@@ -73,7 +74,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         #endregion
 
         #region 构造函数
-        public IndexViewModel(IDialogService service)
+        public IndexViewModel(IDialogHostService service)
         {
             TaskBarModels = new ObservableCollection<TaskBarModel>();
             BacklogModels = new ObservableCollection<BacklogModel>();
@@ -123,7 +124,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// </summary>
         private async void AddBacklog()
         {
-            service.ShowDialog("AddBacklogView");
+            service.ShowDialogAsync("AddBacklogView", null);
         }
 
         /// <summary>
@@ -131,7 +132,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// </summary>
         private async void AddMemo()
         {
-            service.ShowDialog("AddMemoView");
+            service.ShowDialogAsync("AddMemoView", null);
         }
         #endregion
 

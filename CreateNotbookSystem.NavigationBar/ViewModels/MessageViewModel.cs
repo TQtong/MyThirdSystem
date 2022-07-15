@@ -1,6 +1,7 @@
 ﻿using CreateNotbookSystem.NavigationBar.Commo;
 using MaterialDesignThemes.Wpf;
 using Prism.Commands;
+using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -8,15 +9,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CreateNotbookSystem.NavigationBar.ViewModels.Index.Dialogs
+namespace CreateNotbookSystem.NavigationBar.ViewModels
 {
-    public class AddMemoViewModel : IDialogHostAware
+    public class MessageViewModel : BindableBase, IDialogHostAware
     {
-        public string DialogHostName { get; set; }
+        private string title;
+        /// <summary>
+        /// 标题
+        /// </summary>
+        public string Title
+        {
+            get => title;
+            set
+            {
+                title = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
+        private string content;
+        /// <summary>
+        /// 内容
+        /// </summary>
+        public string Content
+        {
+            get => content;
+            set
+            {
+                content = value;
+                RaisePropertyChanged();
+            }
+        }
+
+
+        public string DialogHostName { get; set; } = "Root";
         public DelegateCommand SaveCommand { get; set; }
         public DelegateCommand CancelCommand { get; set; }
 
-        public AddMemoViewModel()
+        public MessageViewModel()
         {
             SaveCommand = new DelegateCommand(Save);
 
@@ -26,6 +57,14 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index.Dialogs
         #region 方法
         public void OnDialogOpend(IDialogParameters parameters)
         {
+            if (parameters.ContainsKey("Title"))
+            {
+                Title = parameters.GetValue<string>("Title");
+            }
+            if (parameters.ContainsKey("Content"))
+            {
+                Title = parameters.GetValue<string>("Content");
+            }
         }
 
         private void Save()

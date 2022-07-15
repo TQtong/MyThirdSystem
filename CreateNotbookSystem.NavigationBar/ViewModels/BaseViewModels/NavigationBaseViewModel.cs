@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CreateNotbookSystem.NavigationBar.ViewModels
+namespace CreateNotbookSystem.NavigationBar.ViewModels.BaseViewModels
 {
     public class NavigationBaseViewModel : BindableBase, INavigationAware
     {

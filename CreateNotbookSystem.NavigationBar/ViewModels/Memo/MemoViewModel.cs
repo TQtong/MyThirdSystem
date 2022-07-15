@@ -1,6 +1,7 @@
 ﻿using CreateNotbookSystem.Common.DbContent.Dto;
 using CreateNotbookSystem.Common.Models;
 using CreateNotbookSystem.NavigationBar.Service;
+using CreateNotbookSystem.NavigationBar.ViewModels.BaseViewModels;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Mvvm;
