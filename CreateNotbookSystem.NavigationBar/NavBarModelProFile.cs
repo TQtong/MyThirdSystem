@@ -1,9 +1,11 @@
 ﻿using CreateNotbookSystem.NavigationBar.ViewModels.Backlog;
 using CreateNotbookSystem.NavigationBar.ViewModels.Index;
+using CreateNotbookSystem.NavigationBar.ViewModels.Index.Dialogs;
 using CreateNotbookSystem.NavigationBar.ViewModels.Memo;
 using CreateNotbookSystem.NavigationBar.ViewModels.Settings;
 using CreateNotbookSystem.NavigationBar.Views.Backlog;
 using CreateNotbookSystem.NavigationBar.Views.Index;
+using CreateNotbookSystem.NavigationBar.Views.Index.Dialogs;
 using CreateNotbookSystem.NavigationBar.Views.Memo;
 using CreateNotbookSystem.NavigationBar.Views.Settings;
 using Prism.Ioc;
@@ -30,6 +32,9 @@ namespace CreateNotbookSystem.NavigationBar
             containerRegistry.RegisterForNavigation<SystemSettingsView, SystemSettingsViewModel>();
             containerRegistry.RegisterForNavigation<AboutView, AboutViewModel>();
 
+            //注册弹窗
+            containerRegistry.RegisterDialog<AddBacklogView, AddBacklogViewModel>();
+            containerRegistry.RegisterDialog<AddMemoView, AddMemoViewModel>();
         }
     }
 }

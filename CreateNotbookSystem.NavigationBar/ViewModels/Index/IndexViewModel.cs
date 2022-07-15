@@ -1,5 +1,7 @@
 ﻿using CreateNotbookSystem.Common.Models;
+using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,6 +43,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         }
 
         private ObservableCollection<MemoModel> memoModels;
+
         /// <summary>
         /// 备忘录
         /// </summary>
@@ -55,37 +58,80 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         }
         #endregion
 
+        #region 字段
+        /// <summary>
+        /// 弹窗接口
+        /// </summary>
+        private readonly IDialogService service;
+        #endregion
+
+        #region 命令
+        /// <summary>
+        /// 命令集合体
+        /// </summary>
+        public DelegateCommand<string> ExecuteCommand { get; private set; }
+        #endregion
+
         #region 构造函数
-        public IndexViewModel()
+        public IndexViewModel(IDialogService service)
         {
             TaskBarModels = new ObservableCollection<TaskBarModel>();
             BacklogModels = new ObservableCollection<BacklogModel>();
             MemorModels = new ObservableCollection<MemoModel>();
+
+            ExecuteCommand = new DelegateCommand<string>(Execute);
+
             CreateTaskBar();
-            CreateTaskBarInfo();
+            this.service = service;
         }
+
 
         #endregion
 
         #region 方法
-                private void CreateTaskBarInfo()
-        {
-            BacklogModels.Clear();
-            MemorModels.Clear();
-
-            for (int i = 0; i < 20; i++)
-            {
-                BacklogModels.Add(new BacklogModel() { Title = $"{i}", Content = "哈哈哈" });
-                MemorModels.Add(new MemoModel() { Title = $"{i}", Content = "哈哈哈" });
-            }
-        }
-
+        /// <summary>
+        /// 创建任务栏
+        /// </summary>
         private void CreateTaskBar()
         {
             TaskBarModels.Add(new TaskBarModel() { Color = "#FF0CA0FF", Icon = "ClockFast", Title = "汇总", Number = "1", NameSpace = "" });
             TaskBarModels.Add(new TaskBarModel() { Color = "#FF1ECA3A", Icon = "ClockCheckOutline", Title = "完成", Number = "2", NameSpace = "" });
             TaskBarModels.Add(new TaskBarModel() { Color = "#FF02C6DC", Icon = "ChartLineVariant", Title = "完成比例", Number = "97%", NameSpace = "" });
             TaskBarModels.Add(new TaskBarModel() { Color = "#FFFFA000", Icon = "PlaylistStar", Title = "备忘录", Number = "4", NameSpace = "" });
+        }
+
+        /// <summary>
+        /// 命令集合体
+        /// </summary>
+        private void Execute(string obj)
+        {
+            switch (obj)
+            {
+                case "新增待办":
+                    AddBacklog();
+                    break;
+                case "新增备忘录":
+                    AddMemo(); 
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 添加待办事项
+        /// </summary>
+        private async void AddBacklog()
+        {
+            service.ShowDialog("AddBacklogView");
+        }
+
+        /// <summary>
+        /// 添加备忘录
+        /// </summary>
+        private async void AddMemo()
+        {
+            service.ShowDialog("AddMemoView");
         }
         #endregion
 
