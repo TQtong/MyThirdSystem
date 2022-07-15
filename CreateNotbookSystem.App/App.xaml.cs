@@ -1,4 +1,5 @@
-﻿using CreateNotbookSystem.App.Views;
+﻿using CreateNotbookSystem.App.Common;
+using CreateNotbookSystem.App.Views;
 using CreateNotbookSystem.CustomControl;
 using CreateNotbookSystem.NavigationBar;
 using CreateNotbookSystem.NavigationBar.Service;
@@ -55,6 +56,21 @@ namespace CreateNotbookSystem.App
         {
             moduleCatalog.AddModule<NavBarModelProFile>();
             moduleCatalog.AddModule<CustomModelProFile>();
+        }
+
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        protected override void OnInitialized()
+        {
+            var service = App.Current.MainWindow.DataContext as IConfigureService;
+
+            if (service != null)
+            {
+                service.Configure();
+            }
+
+            base.OnInitialized();
         }
     }
 }

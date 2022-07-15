@@ -1,4 +1,5 @@
-﻿using CreateNotbookSystem.Common.DbContent;
+﻿using CreateNotbookSystem.App.Common;
+using CreateNotbookSystem.Common.DbContent;
 using CreateNotbookSystem.Common.Models;
 using CreateNotbookSystem.Common.Models.Managers;
 using Prism.Commands;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CreateNotbookSystem.App.ViewModels
 {
-    public class MainWindowViewModel : BindableBase
+    public class MainWindowViewModel : BindableBase, IConfigureService
     {
         #region 属性
         private ObservableCollection<MenuBarModel>  menuBars;
@@ -101,13 +102,14 @@ namespace CreateNotbookSystem.App.ViewModels
             GoForwardCommand = new DelegateCommand(GoForward);
             GoBackCommand = new DelegateCommand(GoBack);
             HomeCommand = new DelegateCommand(Home);
-            CreateMenuBars();
             this.regionManager = regionManager;
             this.IsChecked = false;
         }
 
         #region 方法
-
+        /// <summary>
+        /// 导航栏初始化
+        /// </summary>
         private void CreateMenuBars()
         {
             MenuBars.Add(new MenuBarModel()
@@ -188,6 +190,16 @@ namespace CreateNotbookSystem.App.ViewModels
             var result = MenuBars.FirstOrDefault(x => x.Title == "首页");
             Navigate(result);
             SelectedItem = null;
+        }
+
+        /// <summary>
+        /// 配置首页初始化参数
+        /// </summary>
+        public void Configure()
+        {
+            CreateMenuBars();
+
+            regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate("IndexView");
         }
 
         #endregion
