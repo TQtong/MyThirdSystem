@@ -75,6 +75,20 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
             }
         }
 
+        private int selectedIndex;
+        /// <summary>
+        /// 下拉列表选中状态值
+        /// </summary>
+        public int SelectedIndex
+        {
+            get => selectedIndex;
+            set
+            {
+                selectedIndex = value;
+                RaisePropertyChanged();
+            }
+        }
+
 
         #endregion
 
@@ -154,8 +168,9 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
         {
             UpdateLoading(true);
 
-
             BacklogModels.Clear();
+
+            int? status = SelectedIndex == 0 ? null : SelectedIndex == 2 ? 1 : 0;
 
             var backlog = await service.GetAllAsync(new Common.Parameter.QueryParameter()
             {
