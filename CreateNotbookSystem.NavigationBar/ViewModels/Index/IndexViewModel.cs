@@ -1,6 +1,10 @@
-﻿using CreateNotbookSystem.Common.Models;
+﻿using CreateNotbookSystem.Common.DbContent.Dto;
+using CreateNotbookSystem.Common.Models;
 using CreateNotbookSystem.NavigationBar.Commo;
+using CreateNotbookSystem.NavigationBar.Service;
+using CreateNotbookSystem.NavigationBar.ViewModels.BaseViewModels;
 using Prism.Commands;
+using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
@@ -12,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
 {
-    public class IndexViewModel : BindableBase
+    public class IndexViewModel : NavigationBaseViewModel
     {
         #region 属性
         private ObservableCollection<TaskBarModel> taskBarModels;
@@ -29,31 +33,31 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
             }
         }
 
-        private ObservableCollection<BacklogModel> backlogModels;
+        private ObservableCollection<BacklogDto> backlogs;
         /// <summary>
         /// 待办事项
         /// </summary>
-        public ObservableCollection<BacklogModel> BacklogModels
+        public ObservableCollection<BacklogDto> Backlogs
         {
-            get => backlogModels;
+            get => backlogs;
             set
             {
-                backlogModels = value;
+                backlogs = value;
                 RaisePropertyChanged();
             }
         }
 
-        private ObservableCollection<MemoModel> memoModels;
+        private ObservableCollection<MemoDto> memos;
 
         /// <summary>
         /// 备忘录
         /// </summary>
-        public ObservableCollection<MemoModel> MemorModels
+        public ObservableCollection<MemoDto> Memos
         {
-            get => memoModels;
+            get => memos;
             set
             {
-                memoModels = value;
+                memos = value;
                 RaisePropertyChanged();
             }
         }
@@ -64,6 +68,16 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// 弹窗接口
         /// </summary>
         private readonly IDialogHostService dialog;
+
+        /// <summary>
+        /// 待办事项服务
+        /// </summary>
+        private readonly IBacklogService backlogService;
+
+        /// <summary>
+        /// 备忘录服务
+        /// </summary>
+        private readonly IMemoService memoService;
         #endregion
 
         #region 命令
@@ -74,16 +88,20 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         #endregion
 
         #region 构造函数
-        public IndexViewModel(IDialogHostService dialog)
+        public IndexViewModel(IDialogHostService dialog, IContainerProvider container) : base(container)
         {
             TaskBarModels = new ObservableCollection<TaskBarModel>();
-            BacklogModels = new ObservableCollection<BacklogModel>();
-            MemorModels = new ObservableCollection<MemoModel>();
+            Backlogs = new ObservableCollection<BacklogDto>();
+            Memos = new ObservableCollection<MemoDto>();
 
             ExecuteCommand = new DelegateCommand<string>(Execute);
 
-            CreateTaskBar();
+            this.backlogService = container.Resolve<IBacklogService>();
+            this.memoService = container.Resolve<IMemoService>();
+
             this.dialog = dialog;
+
+            CreateTaskBar();
         }
 
 
@@ -124,7 +142,25 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// </summary>
         private async void AddBacklog()
         {
-            dialog.ShowDialogAsync("AddBacklogView", null);
+            var dialogResult = await dialog.ShowDialogAsync("AddBacklogView", null);
+
+            if (dialogResult.Result == ButtonResult.OK)
+            {
+                var backlog = dialogResult.Parameters.GetValue<BacklogDto>("Value");
+                if (backlog.Id > 0)
+                {
+
+                }
+                else
+                {
+                    var result = await backlogService.AddAsync(backlog);
+
+                    if (result.Status)
+                    {
+                        Backlogs.Add(backlog);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -132,7 +168,25 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// </summary>
         private async void AddMemo()
         {
-            dialog.ShowDialogAsync("AddMemoView", null);
+            var dialogResult = await dialog.ShowDialogAsync("AddMemoView", null);
+
+            if (dialogResult.Result == ButtonResult.OK)
+            {
+                var memo = dialogResult.Parameters.GetValue<MemoDto>("Value");
+                if (memo.Id > 0)
+                {
+
+                }
+                else
+                {
+                    var result = await memoService.AddAsync(memo);
+
+                    if (result.Status)
+                    {
+                        Memos.Add(memo);
+                    }
+                }
+            }
         }
         #endregion
 

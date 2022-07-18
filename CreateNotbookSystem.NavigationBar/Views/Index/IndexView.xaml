@@ -130,7 +130,7 @@
 
                 <ListBox
                     HorizontalContentAlignment="Stretch"
-                    ItemsSource="{Binding BacklogModels}"
+                    ItemsSource="{Binding Backlogs}"
                     ScrollViewer.VerticalScrollBarVisibility="Hidden">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -187,7 +187,7 @@
                 <ListBox
                     Grid.Column="1"
                     HorizontalContentAlignment="Stretch"
-                    ItemsSource="{Binding MemorModels}"
+                    ItemsSource="{Binding Memos}"
                     ScrollViewer.VerticalScrollBarVisibility="Hidden">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
