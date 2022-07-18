@@ -63,7 +63,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels
             }
             if (parameters.ContainsKey("Content"))
             {
-                Title = parameters.GetValue<string>("Content");
+                Content = parameters.GetValue<string>("Content");
             }
         }
 

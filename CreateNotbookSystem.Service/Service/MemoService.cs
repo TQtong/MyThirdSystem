@@ -31,7 +31,7 @@ namespace CreateNotbookSystem.Service.Service
                 var result = await work.SaveChangesAsync();
                 if (result > 0)
                 {
-                    return new ApiResponse(true, model);
+                    return new ApiResponse(true, memo);
                 }
                 return new ApiResponse("添加数据失败");
             }

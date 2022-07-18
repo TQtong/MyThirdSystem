@@ -256,12 +256,12 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Memo
         }
 
         /// <summary>
-        /// 删除选中的待办事项
+        /// 删除选中的备完录
         /// </summary>
         /// <exception cref="NotImplementedException"></exception>
         private async void Delete(MemoDto obj)
         {
-            var dialogResult = await dialog.Question("温馨提示", $"确认退出系统 ?");
+            var dialogResult = await dialog.Question("温馨提示", $"确认删除 ?");
             if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK)
             {
                 return;

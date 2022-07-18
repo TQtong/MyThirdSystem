@@ -12,7 +12,7 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <converter:IntToVisibilityConveter x:Key="intToVisibilityConveter" />
+        <converter:IntToVisibilityConverter x:Key="intToVisibilityConverter" />
     </UserControl.Resources>
 
     <materialDesign:DialogHost>
@@ -106,7 +106,7 @@
                 <StackPanel
                     Grid.Row="1"
                     VerticalAlignment="Center"
-                    Visibility="{Binding Backlogs.Count, Converter={StaticResource intToVisibilityConveter}}">
+                    Visibility="{Binding Backlogs.Count, Converter={StaticResource intToVisibilityConverter}}">
                     <Image Width="250" Source="/Assets/Images/title.jpg" />
                     <TextBlock
                         Margin="0,10"

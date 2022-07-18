@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace CreateNotbookSystem.Common.Converters
 {
-    public class IntToVisibilityConveter : IValueConverter
+    public class IntToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

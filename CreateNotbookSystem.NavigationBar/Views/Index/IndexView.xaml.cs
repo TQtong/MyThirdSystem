@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CreateNotbookSystem.NavigationBar.ViewModels.Index;
+using Prism.Ioc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +22,7 @@ namespace CreateNotbookSystem.NavigationBar.Views.Index
     /// </summary>
     public partial class IndexView : UserControl
     {
-        public IndexView()
+        public IndexView(IContainerProvider container)
         {
             InitializeComponent();
         }
