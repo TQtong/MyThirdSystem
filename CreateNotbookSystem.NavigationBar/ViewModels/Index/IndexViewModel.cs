@@ -7,6 +7,7 @@ using CreateNotbookSystem.NavigationBar.ViewModels.BaseViewModels;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Mvvm;
+using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
@@ -34,34 +35,18 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
             }
         }
 
-        private ObservableCollection<BacklogDto> backlogs;
-        /// <summary>
-        /// 待办事项
-        /// </summary>
-        public ObservableCollection<BacklogDto> Backlogs
+        private SummaryModel summary;
+
+        public SummaryModel Summary
         {
-            get => backlogs;
+            get => summary;
             set
             {
-                backlogs = value;
+                summary = value;
                 RaisePropertyChanged();
             }
         }
 
-        private ObservableCollection<MemoDto> memos;
-
-        /// <summary>
-        /// 备忘录
-        /// </summary>
-        public ObservableCollection<MemoDto> Memos
-        {
-            get => memos;
-            set
-            {
-                memos = value;
-                RaisePropertyChanged();
-            }
-        }
         #endregion
 
         #region 字段
@@ -112,8 +97,6 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         public IndexViewModel(IContainerProvider container) : base(container)
         {
             TaskBarModels = new ObservableCollection<TaskBarModel>();
-            Backlogs = new ObservableCollection<BacklogDto>();
-            Memos = new ObservableCollection<MemoDto>();
 
             ExecuteCommand = new DelegateCommand<string>(Execute);
             EditBacklogCommand = new DelegateCommand<BacklogDto>(AddBacklog);
@@ -140,10 +123,10 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// </summary>
         private void CreateTaskBar()
         {
-            TaskBarModels.Add(new TaskBarModel() { Color = "#FF0CA0FF", Icon = "ClockFast", Title = "汇总", Number = "1", NameSpace = "" });
-            TaskBarModels.Add(new TaskBarModel() { Color = "#FF1ECA3A", Icon = "ClockCheckOutline", Title = "完成", Number = "2", NameSpace = "" });
-            TaskBarModels.Add(new TaskBarModel() { Color = "#FF02C6DC", Icon = "ChartLineVariant", Title = "完成比例", Number = "97%", NameSpace = "" });
-            TaskBarModels.Add(new TaskBarModel() { Color = "#FFFFA000", Icon = "PlaylistStar", Title = "备忘录", Number = "4", NameSpace = "" });
+            TaskBarModels.Add(new TaskBarModel() { Color = "#FF0CA0FF", Icon = "ClockFast", Title = "汇总", NameSpace = "" });
+            TaskBarModels.Add(new TaskBarModel() { Color = "#FF1ECA3A", Icon = "ClockCheckOutline", Title = "完成", NameSpace = "" });
+            TaskBarModels.Add(new TaskBarModel() { Color = "#FF02C6DC", Icon = "ChartLineVariant", Title = "完成比例", NameSpace = "" });
+            TaskBarModels.Add(new TaskBarModel() { Color = "#FFFFA000", Icon = "PlaylistStar", Title = "备忘录", NameSpace = "" });
         }
 
         /// <summary>
@@ -187,7 +170,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
 
                     if (result.Status)
                     {
-                        var backlogModel = Backlogs.ToList().FirstOrDefault(x => x.Id.Equals(backlog.Id));
+                        var backlogModel = Summary.BacklogList.ToList().FirstOrDefault(x => x.Id.Equals(backlog.Id));
 
                         if (backlogModel != null)
                         {
@@ -202,7 +185,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
 
                     if (result.Status)
                     {
-                        Backlogs.Add(result.Result);
+                        Summary.BacklogList.Add(result.Result);
                     }
                 }
             }
@@ -231,12 +214,12 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
 
                     if (result.Status)
                     {
-                        var backlogModel = Backlogs.ToList().FirstOrDefault(x => x.Id.Equals(memo.Id));
+                        var memoModel = Summary.MemoList.ToList().FirstOrDefault(x => x.Id.Equals(memo.Id));
 
-                        if (backlogModel != null)
+                        if (memoModel != null)
                         {
-                            backlogModel.Title = memo.Title;
-                            backlogModel.Content = memo.Content;
+                            memoModel.Title = memo.Title;
+                            memoModel.Content = memo.Content;
                         }
                     }
                 }
@@ -246,7 +229,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
 
                     if (result.Status)
                     {
-                        Memos.Add(result.Result);
+                        Summary.MemoList.Add(result.Result);
                     }
                 }
             }
@@ -263,11 +246,11 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
 
             if (updateResult.Status)
             {
-                var result = Backlogs.FirstOrDefault(x => x.Id.Equals(obj.Id));
+                var result = Summary.BacklogList.FirstOrDefault(x => x.Id.Equals(obj.Id));
 
                 if (result != null)
                 {
-                    Backlogs.Remove(result);
+                    Summary.BacklogList.Remove(result);
                 }
             }
         }
@@ -287,12 +270,40 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
             var result = await memoService.DeleteAsync(obj.Id);
             if (result.Status)
             {
-                var backlog = Memos.FirstOrDefault(t => t.Id == obj.Id);
+                var backlog = Summary.MemoList.FirstOrDefault(t => t.Id == obj.Id);
                 if (backlog != null)
                 {
-                    Memos.Remove(backlog);
+                    Summary.MemoList.Remove(backlog);
                 }
             }
+        }
+
+        /// <summary>
+        /// 导航栏加载时
+        /// </summary>
+        /// <param name="navigationContext"></param>
+        public override async void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            var summaryResult = await backlogService.GetSummaryAsync();
+
+            if (summaryResult.Status)
+            {
+                Summary = summaryResult.Result;
+                Refresh();
+            }
+
+            base.OnNavigatedTo(navigationContext);
+        }
+
+        /// <summary>
+        /// 刷新任务栏
+        /// </summary>
+        private void Refresh()
+        {
+            TaskBarModels[0].Content = Summary.BacklogSum.ToString();
+            TaskBarModels[1].Content = Summary.CompletedCount.ToString();
+            TaskBarModels[2].Content = Summary.CompletedRatio.ToString();
+            TaskBarModels[3].Content = Summary.MemoeCount.ToString();
         }
         #endregion
 

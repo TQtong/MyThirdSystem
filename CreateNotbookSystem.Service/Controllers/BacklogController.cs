@@ -35,5 +35,8 @@ namespace CreateNotbookSystem.Service.Controllers
 
         [HttpDelete]
         public async Task<ApiResponse> Delete(int id) => await service.DeleteAsync(id);
+
+        [HttpGet]
+        public async Task<ApiResponse> Summary() => await service.SummaryAsync();
     }
 }

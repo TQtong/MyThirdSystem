@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using CreateNotbookSystem.Common.DbContent.Dto;
+using CreateNotbookSystem.Common.Models;
 using CreateNotbookSystem.Common.Parameter;
 using CreateNotbookSystem.Service.Context;
 using CreateNotbookSystem.Service.UnitOfWork;
+using System.Collections.ObjectModel;
 
 namespace CreateNotbookSystem.Service.Service
 {
@@ -168,6 +170,32 @@ namespace CreateNotbookSystem.Service.Service
             {
                 return new ApiResponse(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// 生成汇总对象用于渲染前端任务栏
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<ApiResponse> SummaryAsync()
+        {
+            //待办事项结果
+            var baclogs = await work.GetRepository<Backlog>().GetAllAsync(
+                orderBy: data => data.OrderByDescending(x => x.CreatedDate));
+
+            //备忘录结果
+            var memos = await work.GetRepository<Memo>().GetAllAsync(
+                orderBy: data => data.OrderByDescending(x => x.CreatedDate));
+
+            SummaryModel summary = new SummaryModel();
+            summary.BacklogSum = baclogs.Count(); //汇总待办事项数量
+            summary.CompletedCount = baclogs.Where(t => t.Status == 1).Count(); //统计完成数量
+            summary.CompletedRatio = (summary.CompletedCount / (double)summary.BacklogSum).ToString("0%"); //统计完成率
+            summary.MemoeCount = memos.Count();  //汇总备忘录数量
+            summary.BacklogList = new ObservableCollection<BacklogDto>(mapper.Map<List<BacklogDto>>(baclogs.Where(t => t.Status == 0)));
+            summary.MemoList = new ObservableCollection<MemoDto>(mapper.Map<List<MemoDto>>(memos));
+
+            return new ApiResponse(true, summary);
         }
     }
 }

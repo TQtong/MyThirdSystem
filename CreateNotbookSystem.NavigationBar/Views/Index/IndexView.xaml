@@ -75,7 +75,7 @@
                                 <TextBlock
                                     FontSize="30"
                                     FontWeight="Bold"
-                                    Text="{Binding Number}" />
+                                    Text="{Binding Content}" />
                             </StackPanel>
 
                             <Canvas ClipToBounds="True">
@@ -140,7 +140,7 @@
                 <ListBox
                     x:Name="backlogList"
                     HorizontalContentAlignment="Stretch"
-                    ItemsSource="{Binding Backlogs}"
+                    ItemsSource="{Binding Summary.BacklogList}"
                     ScrollViewer.VerticalScrollBarVisibility="Hidden">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
@@ -207,7 +207,7 @@
                     x:Name="memoList"
                     Grid.Column="1"
                     HorizontalContentAlignment="Stretch"
-                    ItemsSource="{Binding Memos}"
+                    ItemsSource="{Binding Summary.MemoList}"
                     ScrollViewer.VerticalScrollBarVisibility="Hidden">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">

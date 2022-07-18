@@ -17,10 +17,19 @@ namespace CreateNotbookSystem.Common.Models
         /// </summary>
         public string Color { get; set; }
 
+        private string content;
         /// <summary>
-        /// 数量
+        /// 内容
         /// </summary>
-        public string Number { get; set; }
+        public override string Content
+        {
+            get => content;
+            set
+            {
+                content = value;
+                OnPropertyChanged();
+            }
+        }
 
     }
 }

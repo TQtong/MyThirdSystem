@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CreateNotbookSystem.Common.DbContent.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace CreateNotbookSystem.Common.Models.BaseModels
     /// <summary>
     /// 公共基类
     /// </summary>
-    public abstract class CommonBaseModel
+    public abstract class CommonBaseModel : BaseDto
     {
         /// <summary>
         /// 标题

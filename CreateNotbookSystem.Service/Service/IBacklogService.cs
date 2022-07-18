@@ -10,5 +10,7 @@ namespace CreateNotbookSystem.Service.Service
     public interface IBacklogService : IBaseService<BacklogDto>
     {
         Task<ApiResponse> GetAllAsync(BacklogQueryParameter query);
+
+        Task<ApiResponse> SummaryAsync();
     }
 }
