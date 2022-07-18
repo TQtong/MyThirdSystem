@@ -63,7 +63,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// <summary>
         /// 弹窗接口
         /// </summary>
-        private readonly IDialogHostService service;
+        private readonly IDialogHostService dialog;
         #endregion
 
         #region 命令
@@ -74,7 +74,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         #endregion
 
         #region 构造函数
-        public IndexViewModel(IDialogHostService service)
+        public IndexViewModel(IDialogHostService dialog)
         {
             TaskBarModels = new ObservableCollection<TaskBarModel>();
             BacklogModels = new ObservableCollection<BacklogModel>();
@@ -83,7 +83,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
             ExecuteCommand = new DelegateCommand<string>(Execute);
 
             CreateTaskBar();
-            this.service = service;
+            this.dialog = dialog;
         }
 
 
@@ -124,7 +124,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// </summary>
         private async void AddBacklog()
         {
-            service.ShowDialogAsync("AddBacklogView", null);
+            dialog.ShowDialogAsync("AddBacklogView", null);
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// </summary>
         private async void AddMemo()
         {
-            service.ShowDialogAsync("AddMemoView", null);
+            dialog.ShowDialogAsync("AddMemoView", null);
         }
         #endregion
 

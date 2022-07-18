@@ -1,5 +1,7 @@
 ﻿using CreateNotbookSystem.Common.DbContent.Dto;
 using CreateNotbookSystem.Common.Models;
+using CreateNotbookSystem.NavigationBar.Commo;
+using CreateNotbookSystem.NavigationBar.Extensions;
 using CreateNotbookSystem.NavigationBar.Service;
 using CreateNotbookSystem.NavigationBar.ViewModels.BaseViewModels;
 using Prism.Commands;
@@ -79,6 +81,8 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Memo
 
         #region 字段
         private readonly IMemoService service;
+
+        private readonly IDialogHostService dialog;
         #endregion
 
         #region 命令
@@ -108,6 +112,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Memo
             SelectedCommand = new DelegateCommand<MemoDto>(Select);
             DeletedCommand = new DelegateCommand<MemoDto>(Delete);
 
+            dialog = container.Resolve<IDialogHostService>();
             this.service = service;
         }
 
@@ -201,6 +206,9 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Memo
             }
         }
 
+        /// <summary>
+        /// 添加备完录
+        /// </summary>
         private async void Save()
         {
             if (string.IsNullOrWhiteSpace(CurrentDto.Title) ||
@@ -253,6 +261,12 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Memo
         /// <exception cref="NotImplementedException"></exception>
         private async void Delete(MemoDto obj)
         {
+            var dialogResult = await dialog.Question("温馨提示", $"确认退出系统 ?");
+            if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK)
+            {
+                return;
+            }
+
             var result = await service.DeleteAsync(obj.Id);
             if (result.Status)
             {

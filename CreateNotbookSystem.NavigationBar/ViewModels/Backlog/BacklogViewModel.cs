@@ -1,5 +1,7 @@
 ﻿using CreateNotbookSystem.Common.DbContent.Dto;
 using CreateNotbookSystem.Common.Models;
+using CreateNotbookSystem.NavigationBar.Commo;
+using CreateNotbookSystem.NavigationBar.Extensions;
 using CreateNotbookSystem.NavigationBar.Service;
 using CreateNotbookSystem.NavigationBar.ViewModels.BaseViewModels;
 using Prism.Commands;
@@ -95,6 +97,8 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
 
         #region 字段
         private readonly IBacklogService service;
+
+        private readonly IDialogHostService dialog;
         #endregion
 
         #region 命令
@@ -124,6 +128,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
             SelectedCommand = new DelegateCommand<BacklogDto>(Select);
             DeletedCommand = new DelegateCommand<BacklogDto>(Delete);
 
+            dialog = container.Resolve<IDialogHostService>();
             this.service = service;
         }
 
@@ -219,6 +224,9 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
             }
         }
 
+        /// <summary>
+        /// 添加待办
+        /// </summary>
         private async void Save()
         {
             if (string.IsNullOrWhiteSpace(CurrentDto.Title) ||
@@ -272,6 +280,12 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Backlog
         /// <exception cref="NotImplementedException"></exception>
         private async void Delete(BacklogDto obj)
         {
+            var dialogResult = await dialog.Question("温馨提示", $"确认删除待办事项:{obj.Title} ?");
+            if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK)
+            {
+                return;
+            }
+
             var result = await service.DeleteAsync(obj.Id);
             if (result.Status)
             {

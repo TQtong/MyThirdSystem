@@ -1,4 +1,5 @@
 ﻿using CreateNotbookSystem.CustomControl.Views;
+using CreateNotbookSystem.NavigationBar.Commo;
 using CreateNotbookSystem.NavigationBar.Extensions;
 using Prism.Events;
 using System;
@@ -22,7 +23,9 @@ namespace CreateNotbookSystem.App.Views
     /// </summary>
     public partial class MainWindowView : Window
     {
-        public MainWindowView(IEventAggregator aggregator)
+        private readonly IDialogHostService dialog;
+
+        public MainWindowView(IEventAggregator aggregator, IDialogHostService dialog)
         {
             InitializeComponent();
 
@@ -57,8 +60,13 @@ namespace CreateNotbookSystem.App.Views
             };
 
             //窗口关闭
-            btnClose.Click += (s, e) =>
+            btnClose.Click += async (s, e) =>
             {
+                var dialogResult = await dialog.Question("温馨提示", $"确认退出系统 ?");
+                if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK)
+                {
+                    return;
+                }
                 this.Close();
             };
 
@@ -83,6 +91,7 @@ namespace CreateNotbookSystem.App.Views
                     this.WindowState = WindowState.Normal;
                 }
             };
+            this.dialog = dialog;
         }
     }
 }

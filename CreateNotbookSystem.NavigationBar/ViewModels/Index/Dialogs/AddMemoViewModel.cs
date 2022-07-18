@@ -41,7 +41,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index.Dialogs
         {
             if (DialogHost.IsDialogOpen(DialogHostName))
             {
-                DialogHost.Close(DialogHostName);
+                DialogHost.Close(DialogHostName, new DialogResult(ButtonResult.No));
             }
         }
         #endregion
