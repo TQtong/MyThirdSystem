@@ -43,7 +43,19 @@
 
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding IsChecked}">
 
-            <DockPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <!--  提示消息  -->
+                <materialDesign:Snackbar
+                    x:Name="snackBar"
+                    Grid.Row="0"
+                    Panel.ZIndex="1"
+                    MessageQueue="{materialDesign:MessageQueue}" />
+                <!--  提示消息  -->
+
                 <!--  头部区域  -->
                 <materialDesign:ColorZone
                     x:Name="colorZone"
@@ -141,10 +153,10 @@
                 <!--  头部区域  -->
 
                 <!--  内容区域  -->
-                <ContentControl prism:RegionManager.RegionName="{x:Static manager:PrismManager.MainViewRegionName}" />
+                <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static manager:PrismManager.MainViewRegionName}" />
                 <!--  内容区域  -->
+            </Grid>
 
-            </DockPanel>
 
             <!--  左侧弹窗  -->
             <materialDesign:DrawerHost.LeftDrawerContent>

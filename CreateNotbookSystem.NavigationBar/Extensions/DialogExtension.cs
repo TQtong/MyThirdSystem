@@ -52,5 +52,25 @@ namespace CreateNotbookSystem.NavigationBar.Extensions
             var dialogResult = await dialogHost.ShowDialogAsync("MessageView", param, dialogHostName);
             return dialogResult;
         }
+
+        /// <summary>
+        /// 注册提示消息事件
+        /// </summary>
+        /// <param name="aggregator"></param>
+        /// <param name="model"></param>
+        public static void ResgiterHintMessage(this IEventAggregator aggregator, Action<string> model)
+        {
+            aggregator.GetEvent<HintMessageEvent>().Subscribe(model);
+        }
+
+        /// <summary>
+        /// 推送提示消息事件
+        /// </summary>
+        /// <param name="aggregator"></param>
+        /// <param name="model"></param>
+        public static void SendHintMessage(this IEventAggregator aggregator, string message)
+        {
+            aggregator.GetEvent<HintMessageEvent>().Publish(message);
+        }
     }
 }

@@ -29,6 +29,13 @@ namespace CreateNotbookSystem.App.Views
         {
             InitializeComponent();
 
+            //注册提示消息
+            aggregator.ResgiterHintMessage(arg =>
+            {
+                snackBar.MessageQueue.Enqueue(arg);
+            });
+
+
             //注册等待消息窗口
             aggregator.Resgiter(arg =>
             {

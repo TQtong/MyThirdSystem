@@ -190,42 +190,50 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// </summary>
         private async void AddBacklog(BacklogDto obj)
         {
-            DialogParameters pairs = new DialogParameters();
-
-            if (obj != null)
+            try
             {
-                pairs.Add("Value", obj);
-            }
+                UpdateLoading(true);
+                DialogParameters pairs = new DialogParameters();
 
-            var dialogResult = await dialog.ShowDialogAsync("AddBacklogView", pairs);
-
-            if (dialogResult.Result == ButtonResult.OK)
-            {
-                var backlog = dialogResult.Parameters.GetValue<BacklogDto>("Value");
-                if (backlog.Id > 0)
+                if (obj != null)
                 {
-                    var result = await backlogService.UpdateAsync(backlog);
+                    pairs.Add("Value", obj);
+                }
 
-                    if (result.Status)
+                var dialogResult = await dialog.ShowDialogAsync("AddBacklogView", pairs);
+
+                if (dialogResult.Result == ButtonResult.OK)
+                {
+                    var backlog = dialogResult.Parameters.GetValue<BacklogDto>("Value");
+                    if (backlog.Id > 0)
                     {
-                        var backlogModel = Summary.BacklogList.ToList().FirstOrDefault(x => x.Id.Equals(backlog.Id));
+                        var result = await backlogService.UpdateAsync(backlog);
 
-                        if (backlogModel != null)
+                        if (result.Status)
                         {
-                            backlogModel.Title = backlog.Title;
-                            backlogModel.Content = backlog.Content;
+                            var backlogModel = Summary.BacklogList.ToList().FirstOrDefault(x => x.Id.Equals(backlog.Id));
+
+                            if (backlogModel != null)
+                            {
+                                backlogModel.Title = backlog.Title;
+                                backlogModel.Content = backlog.Content;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var result = await backlogService.AddAsync(backlog);
+
+                        if (result.Status)
+                        {
+                            GetSummary();
                         }
                     }
                 }
-                else
-                {
-                    var result = await backlogService.AddAsync(backlog);
-
-                    if (result.Status)
-                    {
-                        GetSummary();
-                    }
-                }
+            }
+            finally
+            {
+                UpdateLoading(false);
             }
         }
 
@@ -234,42 +242,50 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// </summary>
         private async void AddMemo(MemoDto obj)
         {
-            DialogParameters pairs = new DialogParameters();
-
-            if (obj != null)
+            try
             {
-                pairs.Add("Value", obj);
-            }
+                UpdateLoading(true);
+                DialogParameters pairs = new DialogParameters();
 
-            var dialogResult = await dialog.ShowDialogAsync("AddMemoView", pairs);
-
-            if (dialogResult.Result == ButtonResult.OK)
-            {
-                var memo = dialogResult.Parameters.GetValue<MemoDto>("Value");
-                if (memo.Id > 0)
+                if (obj != null)
                 {
-                    var result = await memoService.UpdateAsync(memo);
+                    pairs.Add("Value", obj);
+                }
 
-                    if (result.Status)
+                var dialogResult = await dialog.ShowDialogAsync("AddMemoView", pairs);
+
+                if (dialogResult.Result == ButtonResult.OK)
+                {
+                    var memo = dialogResult.Parameters.GetValue<MemoDto>("Value");
+                    if (memo.Id > 0)
                     {
-                        var memoModel = Summary.MemoList.ToList().FirstOrDefault(x => x.Id.Equals(memo.Id));
+                        var result = await memoService.UpdateAsync(memo);
 
-                        if (memoModel != null)
+                        if (result.Status)
                         {
-                            memoModel.Title = memo.Title;
-                            memoModel.Content = memo.Content;
+                            var memoModel = Summary.MemoList.ToList().FirstOrDefault(x => x.Id.Equals(memo.Id));
+
+                            if (memoModel != null)
+                            {
+                                memoModel.Title = memo.Title;
+                                memoModel.Content = memo.Content;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var result = await memoService.AddAsync(memo);
+
+                        if (result.Status)
+                        {
+                            GetSummary();
                         }
                     }
                 }
-                else
-                {
-                    var result = await memoService.AddAsync(memo);
-
-                    if (result.Status)
-                    {
-                        GetSummary();
-                    }
-                }
+            }
+            finally
+            {
+                UpdateLoading(false);
             }
         }
 
@@ -280,20 +296,32 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// <exception cref="NotImplementedException"></exception>
         private async void Complete(BacklogDto obj)
         {
-            var updateResult = await backlogService.UpdateAsync(obj);
-
-            if (updateResult.Status)
+            try
             {
-                var result = Summary.BacklogList.FirstOrDefault(x => x.Id.Equals(obj.Id));
+                UpdateLoading(true);
+                var updateResult = await backlogService.UpdateAsync(obj);
 
-                if (result != null)
+                if (updateResult.Status)
                 {
-                    Summary.BacklogList.Remove(result);
+                    var result = Summary.BacklogList.FirstOrDefault(x => x.Id.Equals(obj.Id));
+
+                    if (result != null)
+                    {
+                        Summary.BacklogList.Remove(result);
+                    }
                 }
+                GetSummary();
+
+                aggregator.SendHintMessage("已完成");
             }
-
-            GetSummary();
-
+            catch (Exception ex) 
+            {
+                throw ex;
+            }
+            finally
+            {
+                UpdateLoading(false);
+            }
         }
 
         /// <summary>
@@ -382,8 +410,5 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
             Title = $"你好，TQtong，现在是：{DateTime.Now.ToString("yyyy年MM月dd日 dddd tt HH:mm:ss")}";
         }
         #endregion
-
-
-
     }
 }
