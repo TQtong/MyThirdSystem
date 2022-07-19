@@ -190,18 +190,18 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// </summary>
         private async void AddBacklog(BacklogDto obj)
         {
+            DialogParameters pairs = new DialogParameters();
+
+            if (obj != null)
+            {
+                pairs.Add("Value", obj);
+            }
+
+            var dialogResult = await dialog.ShowDialogAsync("AddBacklogView", pairs);
+
             try
             {
                 UpdateLoading(true);
-                DialogParameters pairs = new DialogParameters();
-
-                if (obj != null)
-                {
-                    pairs.Add("Value", obj);
-                }
-
-                var dialogResult = await dialog.ShowDialogAsync("AddBacklogView", pairs);
-
                 if (dialogResult.Result == ButtonResult.OK)
                 {
                     var backlog = dialogResult.Parameters.GetValue<BacklogDto>("Value");
@@ -242,17 +242,17 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// </summary>
         private async void AddMemo(MemoDto obj)
         {
+            DialogParameters pairs = new DialogParameters();
+
+            if (obj != null)
+            {
+                pairs.Add("Value", obj);
+            }
+
+            var dialogResult = await dialog.ShowDialogAsync("AddMemoView", pairs);
             try
             {
                 UpdateLoading(true);
-                DialogParameters pairs = new DialogParameters();
-
-                if (obj != null)
-                {
-                    pairs.Add("Value", obj);
-                }
-
-                var dialogResult = await dialog.ShowDialogAsync("AddMemoView", pairs);
 
                 if (dialogResult.Result == ButtonResult.OK)
                 {

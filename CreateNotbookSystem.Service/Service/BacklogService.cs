@@ -192,8 +192,8 @@ namespace CreateNotbookSystem.Service.Service
             summary.CompletedCount = baclogs.Where(t => t.Status == 1).Count(); //统计完成数量
             summary.CompletedRatio = (summary.CompletedCount / (double)summary.BacklogSum).ToString("0%"); //统计完成率
             summary.MemoeCount = memos.Count();  //汇总备忘录数量
-            summary.BacklogList = new ObservableCollection<BacklogDto>(mapper.Map<List<BacklogDto>>(baclogs.Where(t => t.Status == 0)));
-            summary.MemoList = new ObservableCollection<MemoDto>(mapper.Map<List<MemoDto>>(memos));
+            summary.BacklogList = new ObservableCollection<BacklogDto>(mapper.Map<List<BacklogDto>>(baclogs.Reverse().Where(t => t.Status == 0)));
+            summary.MemoList = new ObservableCollection<MemoDto>(mapper.Map<List<MemoDto>>(memos.Reverse()));
 
             return new ApiResponse(true, summary);
         }
