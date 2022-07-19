@@ -17,6 +17,6 @@ namespace CreateNotbookSystem.Service.Service
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<ApiResponse> ResgiterAsync(UserDto user);
+        Task<ApiResponse> RegisterAsync(UserDto user);
     }
 }

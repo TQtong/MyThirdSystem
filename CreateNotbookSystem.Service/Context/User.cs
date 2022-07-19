@@ -20,7 +20,7 @@ namespace CreateNotbookSystem.Service.Context
         public string Name { get; set; }
 
         [Column("password")]
-        public string PassWord { get; set; }
+        public string Password { get; set; }
 
     }
 }

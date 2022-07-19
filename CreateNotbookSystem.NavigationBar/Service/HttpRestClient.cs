@@ -37,7 +37,7 @@ namespace CreateNotbookSystem.NavigationBar.Service
 
             if (baseRequest.Parameter != null)
             {
-                request.AddObject(baseRequest.Parameter);
+                request.AddJsonBody(baseRequest.Parameter);
             }
 
             var response = await client.ExecuteAsync(request);

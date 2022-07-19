@@ -1,15 +1,16 @@
-﻿using System;
+﻿using CreateNotbookSystem.Common.DbContent.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CreateNotbookSystem.Common.DbContent.Dto
+namespace CreateNotbookSystem.Common.Models
 {
     /// <summary>
-    /// 用户表
+    /// 注册账号
     /// </summary>
-    public class UserDto : BaseDto
+    public class RegisterModel : BaseDto
     {
         private string account;
         /// <summary>
@@ -53,5 +54,18 @@ namespace CreateNotbookSystem.Common.DbContent.Dto
             }
         }
 
+        private string newPassword;
+        /// <summary>
+        /// 确认密码
+        /// </summary>
+        public string NewPassword
+        {
+            get => newPassword;
+            set
+            {
+                newPassword = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

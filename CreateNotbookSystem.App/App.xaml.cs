@@ -49,6 +49,7 @@ namespace CreateNotbookSystem.App
             //注册客户端服务
             containerRegistry.Register<IBacklogService, BacklogService>();
             containerRegistry.Register<IMemoService, MemoService>();
+            containerRegistry.Register<ILoginService, LoginService>();
 
             //注册自定义弹窗服务
             containerRegistry.Register<IDialogHostService, DialogHostService>();

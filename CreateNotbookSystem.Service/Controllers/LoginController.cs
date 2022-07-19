@@ -18,13 +18,13 @@ namespace CreateNotbookSystem.Service.Controllers
             this.service = service;
         }
 
-        [HttpGet]
-        public async Task<ApiResponse> Login(string account, string password) =>
-            await service.LoginAsync(account, password);
+        [HttpPost]
+        public async Task<ApiResponse> Login([FromBody] UserDto param) =>
+            await service.LoginAsync(param.Account, param.Password);
 
         [HttpPost]
-        public async Task<ApiResponse> Resgiter([FromBody] UserDto param) =>
-            await service.ResgiterAsync(param);
+        public async Task<ApiResponse> Register([FromBody] UserDto param) =>
+            await service.RegisterAsync(param);
 
     }
 }

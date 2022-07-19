@@ -25,7 +25,7 @@ namespace CreateNotbookSystem.Service.Service
 
                 var userDb = await work.GetRepository<User>().GetFirstOrDefaultAsync(predicate:
                     x => (x.Account.Equals(Account)) &&
-                    (x.PassWord.Equals(Password)));
+                    (x.Password.Equals(Password)));
 
                 if (userDb == null)
                 {
@@ -40,7 +40,7 @@ namespace CreateNotbookSystem.Service.Service
             }
         }
 
-        public async Task<ApiResponse> ResgiterAsync(UserDto model)
+        public async Task<ApiResponse> RegisterAsync(UserDto model)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace CreateNotbookSystem.Service.Service
                 }
 
                 user.CreatedDate = DateTime.Now;
-                user.PassWord = user.PassWord.GetMD5();
+                user.Password = user.Password.GetMD5();
                 await repository.InsertAsync(user);
 
                 if (await work.SaveChangesAsync() > 0)
