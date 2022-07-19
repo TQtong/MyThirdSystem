@@ -9,7 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Images\login_1.png" />
     <None Remove="Assets\Images\title.jpg" />
+    <None Remove="Assets\Images\wind.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,7 +31,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Images\login_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Images\title.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Images\wind.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

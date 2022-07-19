@@ -190,7 +190,14 @@ namespace CreateNotbookSystem.Service.Service
             SummaryModel summary = new SummaryModel();
             summary.BacklogSum = baclogs.Count(); //汇总待办事项数量
             summary.CompletedCount = baclogs.Where(t => t.Status == 1).Count(); //统计完成数量
-            summary.CompletedRatio = (summary.CompletedCount / (double)summary.BacklogSum).ToString("0%"); //统计完成率
+            if (summary.BacklogSum != 0)
+            {
+                summary.CompletedRatio = (summary.CompletedCount / (double)summary.BacklogSum).ToString("0%"); //统计完成率
+            }
+            else
+            {
+                summary.CompletedRatio = 0.ToString("0%");
+            }
             summary.MemoeCount = memos.Count();  //汇总备忘录数量
             summary.BacklogList = new ObservableCollection<BacklogDto>(mapper.Map<List<BacklogDto>>(baclogs.Reverse().Where(t => t.Status == 0)));
             summary.MemoList = new ObservableCollection<MemoDto>(mapper.Map<List<MemoDto>>(memos.Reverse()));

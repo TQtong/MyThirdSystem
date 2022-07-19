@@ -107,7 +107,7 @@
                     Grid.Row="1"
                     VerticalAlignment="Center"
                     Visibility="{Binding Backlogs.Count, Converter={StaticResource intToVisibilityConverter}}">
-                    <Image Width="250" Source="/Assets/Images/title.jpg" />
+                    <Image Width="250" Source="/Assets/Images/wind.png" />
                     <TextBlock
                         Margin="0,10"
                         HorizontalAlignment="Center"
