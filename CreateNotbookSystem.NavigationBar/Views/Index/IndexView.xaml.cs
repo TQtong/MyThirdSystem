@@ -25,6 +25,8 @@ namespace CreateNotbookSystem.NavigationBar.Views.Index
         public IndexView(IContainerProvider container)
         {
             InitializeComponent();
+
         }
+
     }
 }

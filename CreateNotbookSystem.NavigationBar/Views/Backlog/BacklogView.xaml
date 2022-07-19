@@ -92,7 +92,7 @@
                     <ComboBox VerticalAlignment="Center" SelectedIndex="{Binding SelectedIndex}">
                         <ComboBoxItem>全部</ComboBoxItem>
                         <ComboBoxItem>待办</ComboBoxItem>
-                        <ComboBoxItem>完成</ComboBoxItem>
+                        <ComboBoxItem>已完成</ComboBoxItem>
                     </ComboBox>
                 </StackPanel>
 

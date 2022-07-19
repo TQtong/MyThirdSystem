@@ -1,5 +1,6 @@
 ﻿using CreateNotbookSystem.Common.DbContent.Dto;
 using CreateNotbookSystem.Common.Models;
+using CreateNotbookSystem.Common.Models.Managers;
 using CreateNotbookSystem.NavigationBar.Commo;
 using CreateNotbookSystem.NavigationBar.Extensions;
 using CreateNotbookSystem.NavigationBar.Service;
@@ -36,7 +37,9 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         }
 
         private SummaryModel summary;
-
+        /// <summary>
+        /// 汇总信息
+        /// </summary>
         public SummaryModel Summary
         {
             get => summary;
@@ -46,6 +49,21 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
                 RaisePropertyChanged();
             }
         }
+
+        private string title;
+        /// <summary>
+        /// 标题
+        /// </summary>
+        public string Title
+        {
+            get => title;
+            set
+            {
+                title = value;
+                RaisePropertyChanged();
+            }
+        }
+
 
         #endregion
 
@@ -64,6 +82,16 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// 备忘录服务
         /// </summary>
         private readonly IMemoService memoService;
+
+        /// <summary>
+        /// 导航管理
+        /// </summary>
+        private readonly IRegionManager regionManager;
+
+        /// <summary>
+        /// 定时器
+        /// </summary>
+        private System.Windows.Threading.DispatcherTimer timer;
         #endregion
 
         #region 命令
@@ -91,11 +119,22 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// 右键删除备完录
         /// </summary>
         public DelegateCommand<MemoDto> DeleteMemoCommand { get; private set; }
+
+        /// <summary>
+        /// 点击任务栏导航到指定的窗口中
+        /// </summary>
+        public DelegateCommand<TaskBarModel> NavigateCommand { get; private set; }
         #endregion
 
         #region 构造函数
         public IndexViewModel(IContainerProvider container) : base(container)
         {
+
+            timer = new System.Windows.Threading.DispatcherTimer();//创建定时器
+            timer.Tick += Timer_Tick; ;//执行事件
+            timer.Interval = new TimeSpan(0, 0, 0, 1);//1s执行
+            timer.Start();//开启
+
             TaskBarModels = new ObservableCollection<TaskBarModel>();
 
             ExecuteCommand = new DelegateCommand<string>(Execute);
@@ -103,16 +142,15 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
             EditMemoCommand = new DelegateCommand<MemoDto>(AddMemo);
             BacklogCompleteCommand = new DelegateCommand<BacklogDto>(Complete);
             DeleteMemoCommand = new DelegateCommand<MemoDto>(Delete);
+            NavigateCommand = new DelegateCommand<TaskBarModel>(Navigate);
 
             this.backlogService = container.Resolve<IBacklogService>();
             this.memoService = container.Resolve<IMemoService>();
-
+            this.regionManager = container.Resolve<IRegionManager>();
             this.dialog = container.Resolve<IDialogHostService>();
 
             CreateTaskBar();
         }
-
-
 
 
         #endregion
@@ -123,10 +161,10 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// </summary>
         private void CreateTaskBar()
         {
-            TaskBarModels.Add(new TaskBarModel() { Color = "#FF0CA0FF", Icon = "ClockFast", Title = "汇总", NameSpace = "" });
-            TaskBarModels.Add(new TaskBarModel() { Color = "#FF1ECA3A", Icon = "ClockCheckOutline", Title = "完成", NameSpace = "" });
+            TaskBarModels.Add(new TaskBarModel() { Color = "#FF0CA0FF", Icon = "ClockFast", Title = "汇总", NameSpace = "BacklogView" });
+            TaskBarModels.Add(new TaskBarModel() { Color = "#FF1ECA3A", Icon = "ClockCheckOutline", Title = "已完成", NameSpace = "BacklogView" });
             TaskBarModels.Add(new TaskBarModel() { Color = "#FF02C6DC", Icon = "ChartLineVariant", Title = "完成比例", NameSpace = "" });
-            TaskBarModels.Add(new TaskBarModel() { Color = "#FFFFA000", Icon = "PlaylistStar", Title = "备忘录", NameSpace = "" });
+            TaskBarModels.Add(new TaskBarModel() { Color = "#FFFFA000", Icon = "PlaylistStar", Title = "备忘录", NameSpace = "MemoView" });
         }
 
         /// <summary>
@@ -185,7 +223,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
 
                     if (result.Status)
                     {
-                        Summary.BacklogList.Add(result.Result);
+                        GetSummary();
                     }
                 }
             }
@@ -229,7 +267,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
 
                     if (result.Status)
                     {
-                        Summary.MemoList.Add(result.Result);
+                        GetSummary();
                     }
                 }
             }
@@ -253,6 +291,9 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
                     Summary.BacklogList.Remove(result);
                 }
             }
+
+            GetSummary();
+
         }
 
         /// <summary>
@@ -284,6 +325,16 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// <param name="navigationContext"></param>
         public override async void OnNavigatedTo(NavigationContext navigationContext)
         {
+            GetSummary();
+
+            base.OnNavigatedTo(navigationContext);
+        }
+
+        /// <summary>
+        /// 获取汇总信息
+        /// </summary>
+        private async void GetSummary()
+        {
             var summaryResult = await backlogService.GetSummaryAsync();
 
             if (summaryResult.Status)
@@ -291,8 +342,6 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
                 Summary = summaryResult.Result;
                 Refresh();
             }
-
-            base.OnNavigatedTo(navigationContext);
         }
 
         /// <summary>
@@ -304,6 +353,33 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
             TaskBarModels[1].Content = Summary.CompletedCount.ToString();
             TaskBarModels[2].Content = Summary.CompletedRatio.ToString();
             TaskBarModels[3].Content = Summary.MemoeCount.ToString();
+        }
+
+        /// <summary>
+        /// 点击任务栏导航到指定的窗口中
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void Navigate(TaskBarModel obj)
+        {
+            NavigationParameters pairs = new NavigationParameters();
+
+            if (obj.Title == "已完成")
+            {
+                pairs.Add("Value", 2);
+            }
+
+            regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate(obj.NameSpace, pairs);
+        }
+
+        /// <summary>
+        /// 定时器，隔一秒更新下标题
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Timer_Tick(object? sender, EventArgs e)
+        {
+            Title = $"你好，TQtong，现在是：{DateTime.Now.ToString("yyyy年MM月dd日 dddd tt HH:mm:ss")}";
         }
         #endregion
 

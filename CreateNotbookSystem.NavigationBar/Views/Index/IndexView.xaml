@@ -30,7 +30,7 @@
             <TextBlock
                 Margin="15,10"
                 FontSize="30"
-                Text="Hello,Wrold!!!" />
+                Text="{Binding Title}" />
         </StackPanel>
 
         <!--  总览  -->
@@ -46,6 +46,13 @@
                         Margin="10"
                         Background="{Binding Color}"
                         CornerRadius="10">
+                        <Border.InputBindings>
+                            <MouseBinding
+                                Command="{Binding DataContext.NavigateCommand, RelativeSource={RelativeSource AncestorType=ItemsControl, Mode=FindAncestor}}"
+                                CommandParameter="{Binding}"
+                                MouseAction="LeftClick" />
+                        </Border.InputBindings>
+
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Style.Triggers>
