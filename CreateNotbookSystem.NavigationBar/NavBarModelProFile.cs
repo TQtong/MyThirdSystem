@@ -38,6 +38,9 @@ namespace CreateNotbookSystem.NavigationBar
             containerRegistry.RegisterForNavigation<AddBacklogView, AddBacklogViewModel>();
             containerRegistry.RegisterForNavigation<AddMemoView, AddMemoViewModel>();
             containerRegistry.RegisterForNavigation<MessageView, MessageViewModel>();
+
+            //注册登录窗口
+            containerRegistry.RegisterDialog<LoginView,LoginViewModel>();
         }
     }
 }

@@ -4,10 +4,12 @@ using CreateNotbookSystem.CustomControl;
 using CreateNotbookSystem.NavigationBar;
 using CreateNotbookSystem.NavigationBar.Commo;
 using CreateNotbookSystem.NavigationBar.Service;
+using CreateNotbookSystem.NavigationBar.Views;
 using DryIoc;
 using Prism.DryIoc;
 using Prism.Ioc;
 using Prism.Modularity;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -67,14 +69,25 @@ namespace CreateNotbookSystem.App
         /// </summary>
         protected override void OnInitialized()
         {
-            var service = App.Current.MainWindow.DataContext as IConfigureService;
+            var dialog = Container.Resolve<IDialogService>();
 
-            if (service != null)
+            dialog.ShowDialog("LoginView", callback =>
             {
-                service.Configure();
-            }
+                if (callback.Result == ButtonResult.OK || callback.Result == ButtonResult.None)
+                {
+                    Application.Current.Shutdown();
+                    return;
+                }
 
-            base.OnInitialized();
+                var service = App.Current.MainWindow.DataContext as IConfigureService;
+
+                if (service != null)
+                {
+                    service.Configure();
+                }
+
+                base.OnInitialized();
+            });
         }
     }
 }
