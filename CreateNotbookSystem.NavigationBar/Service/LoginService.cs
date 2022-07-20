@@ -17,14 +17,14 @@ namespace CreateNotbookSystem.NavigationBar.Service
             this.client = client;
         }
 
-        public async Task<ApiResponse> LoginAsync(UserDto param)
+        public async Task<ApiResponse<UserDto>> LoginAsync(UserDto param)
         {
             BaseRequest request = new BaseRequest();
             request.Method = RestSharp.Method.Post;
             request.Route = $"api/Login/Login";
             request.Parameter = param;
 
-            return await client.ExecuteAsync(request);
+            return await client.ExecuteAsync<UserDto>(request);
         }
 
         public async Task<ApiResponse> RegisterAsync(UserDto param)

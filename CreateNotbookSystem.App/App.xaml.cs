@@ -90,5 +90,25 @@ namespace CreateNotbookSystem.App
                 base.OnInitialized();
             });
         }
+
+        /// <summary>
+        /// 退出当前账号
+        /// </summary>
+        public static void ExitAccout(IContainerProvider container)
+        {
+            Application.Current.MainWindow.Hide();
+            var dialog = container.Resolve<IDialogService>();
+
+            dialog.ShowDialog("LoginView", callback =>
+            {
+                if (callback.Result != ButtonResult.OK || callback.Result == ButtonResult.None)
+                {
+                    Application.Current.Shutdown();
+                    return;
+                }
+            });
+
+            Application.Current.MainWindow.Show();
+        }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using CreateNotbookSystem.App.Common;
+using CreateNotbookSystem.Common.Common;
 using CreateNotbookSystem.Common.DbContent;
 using CreateNotbookSystem.Common.Models;
 using CreateNotbookSystem.Common.Models.Managers;
 using Prism.Commands;
+using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
@@ -64,6 +66,10 @@ namespace CreateNotbookSystem.App.ViewModels
             }
         }
 
+        /// <summary>
+        /// 获取登录的用户名
+        /// </summary>
+        public static string Name { get; set; }
 
         #endregion
 
@@ -77,6 +83,11 @@ namespace CreateNotbookSystem.App.ViewModels
         /// 导航日志
         /// </summary>
         private IRegionNavigationJournal journal;
+
+        /// <summary>
+        /// 容器
+        /// </summary>
+        private readonly IContainerProvider container;
         #endregion
 
         #region 命令
@@ -94,17 +105,28 @@ namespace CreateNotbookSystem.App.ViewModels
         /// 返回首页
         /// </summary>
         public DelegateCommand HomeCommand { get; private set; }
+
+        /// <summary>
+        /// 退出当前账号
+        /// </summary>
+        public DelegateCommand ExitCommand { get; private set; }
         #endregion
 
-        public MainWindowViewModel(IRegionManager regionManager)
+        public MainWindowViewModel(IRegionManager regionManager, IContainerProvider container)
         {
             MenuBars = new ObservableCollection<MenuBarModel>();
+
             GoForwardCommand = new DelegateCommand(GoForward);
             GoBackCommand = new DelegateCommand(GoBack);
             HomeCommand = new DelegateCommand(Home);
+            ExitCommand = new DelegateCommand(Exit);
+
             this.regionManager = regionManager;
+            this.container = container;
             this.IsChecked = false;
         }
+
+
 
         #region 方法
         /// <summary>
@@ -202,6 +224,14 @@ namespace CreateNotbookSystem.App.ViewModels
             regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate("IndexView");
         }
 
+        /// <summary>
+        /// 退出当前账号
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        private void Exit()
+        {
+            App.ExitAccout(container);
+        }
         #endregion
 
     }

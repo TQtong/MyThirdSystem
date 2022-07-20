@@ -1,4 +1,5 @@
-﻿using CreateNotbookSystem.Common.DbContent.Dto;
+﻿using CreateNotbookSystem.Common.Common;
+using CreateNotbookSystem.Common.DbContent.Dto;
 using CreateNotbookSystem.Common.Models;
 using CreateNotbookSystem.Common.Models.Managers;
 using CreateNotbookSystem.NavigationBar.Commo;
@@ -407,7 +408,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// <param name="e"></param>
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            Title = $"你好，TQtong，现在是：{DateTime.Now.ToString("yyyy年MM月dd日 dddd tt HH:mm:ss")}";
+            Title = $"你好，{AppSession.Name}，现在是：{DateTime.Now.ToString("yyyy年MM月dd日 dddd tt HH:mm:ss")}";
         }
         #endregion
     }

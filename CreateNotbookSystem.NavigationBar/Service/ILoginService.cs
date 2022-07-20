@@ -10,7 +10,7 @@ namespace CreateNotbookSystem.NavigationBar.Service
 {
     public interface ILoginService
     {
-        Task<ApiResponse> LoginAsync(UserDto param);
+        Task<ApiResponse<UserDto>> LoginAsync(UserDto param);
         Task<ApiResponse> RegisterAsync(UserDto param);
     }
 }

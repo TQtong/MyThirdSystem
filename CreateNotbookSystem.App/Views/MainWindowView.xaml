@@ -111,14 +111,24 @@
                             Text="记事本" />
 
                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                            <Border
-                                Width="50"
-                                Height="50"
-                                CornerRadius="25">
-                                <Border.Background>
-                                    <ImageBrush ImageSource="/Assets/Images/title.jpg" />
-                                </Border.Background>
-                            </Border>
+                            <materialDesign:PopupBox DockPanel.Dock="Right">
+                                <materialDesign:PopupBox.ToggleContent>
+                                    <Border
+                                        Width="50"
+                                        Height="50"
+                                        CornerRadius="25">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="/Assets/Images/title.jpg" />
+                                        </Border.Background>
+                                    </Border>
+                                </materialDesign:PopupBox.ToggleContent>
+
+                                <StackPanel>
+                                    <!--<Button Command="{Binding AppCenterCommand}" Content="个人中心"/>-->
+                                    <Button Command="{Binding ExitCommand}" Content="注销当前账户" />
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+
                             <Button x:Name="btnMin" Style="{StaticResource MaterialDesignFlatMidBgButton}">
                                 <Button.Content>
                                     <materialDesign:PackIcon
@@ -176,7 +186,7 @@
                             HorizontalAlignment="Center"
                             FontSize="20"
                             FontWeight="Bold"
-                            Text="TQtong" />
+                            Text="{Binding Name}" />
                     </StackPanel>
                     <!--  用户信息  -->
 
