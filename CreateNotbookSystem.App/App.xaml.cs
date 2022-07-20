@@ -74,7 +74,7 @@ namespace CreateNotbookSystem.App
 
             dialog.ShowDialog("LoginView", callback =>
             {
-                if (callback.Result == ButtonResult.OK || callback.Result == ButtonResult.None)
+                if (callback.Result != ButtonResult.OK || callback.Result == ButtonResult.None)
                 {
                     Application.Current.Shutdown();
                     return;

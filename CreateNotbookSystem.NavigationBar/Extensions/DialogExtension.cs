@@ -58,9 +58,12 @@ namespace CreateNotbookSystem.NavigationBar.Extensions
         /// </summary>
         /// <param name="aggregator"></param>
         /// <param name="model"></param>
-        public static void ResgiterHintMessage(this IEventAggregator aggregator, Action<string> model)
+        public static void ResgiterHintMessage(this IEventAggregator aggregator, Action<MessageModel> model, string filterName = "MainWindow")
         {
-            aggregator.GetEvent<HintMessageEvent>().Subscribe(model);
+            aggregator.GetEvent<HintMessageEvent>().Subscribe(model, ThreadOption.PublisherThread, true, x =>
+            {
+                return x.Filter.Equals(filterName);
+            });
         }
 
         /// <summary>
@@ -68,9 +71,13 @@ namespace CreateNotbookSystem.NavigationBar.Extensions
         /// </summary>
         /// <param name="aggregator"></param>
         /// <param name="model"></param>
-        public static void SendHintMessage(this IEventAggregator aggregator, string message)
+        public static void SendHintMessage(this IEventAggregator aggregator, string message, string filterName = "MainWindow")
         {
-            aggregator.GetEvent<HintMessageEvent>().Publish(message);
+            aggregator.GetEvent<HintMessageEvent>().Publish(new MessageModel()
+            {
+                Filter = filterName,
+                Message = message
+            });
         }
     }
 }

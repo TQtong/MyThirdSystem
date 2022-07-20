@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CreateNotbookSystem.NavigationBar.Extensions;
+using Prism.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,16 @@ namespace CreateNotbookSystem.NavigationBar.Views
     /// </summary>
     public partial class LoginView : UserControl
     {
-        public LoginView()
+        public LoginView(IEventAggregator aggregator)
         {
             InitializeComponent();
+
+            //注册提示消息（跟mainwindow类似）
+            aggregator.ResgiterHintMessage(arg =>
+            {
+                loginSnackBar.MessageQueue.Enqueue(arg.Message);
+            }, "Login");
+
         }
     }
 }

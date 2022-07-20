@@ -1,4 +1,5 @@
-﻿using Prism.Events;
+﻿using CreateNotbookSystem.Common.Models;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace CreateNotbookSystem.NavigationBar.Event
     /// <summary>
     /// 提示信息
     /// </summary>
-    public class HintMessageEvent : PubSubEvent<string>
+    public class HintMessageEvent : PubSubEvent<MessageModel>
     {
     }
 }

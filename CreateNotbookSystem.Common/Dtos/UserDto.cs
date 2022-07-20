@@ -25,11 +25,11 @@ namespace CreateNotbookSystem.Common.DbContent.Dto
             }
         }
 
-        private string name;
+        private string? name;
         /// <summary>
         /// 用户名
         /// </summary>
-        public string Name
+        public string? Name
         {
             get => name;
             set

@@ -1,6 +1,10 @@
 ﻿using CreateNotbookSystem.Common.Models;
+using CreateNotbookSystem.NavigationBar.Extensions;
 using CreateNotbookSystem.NavigationBar.Service;
+using CreateNotbookSystem.NavigationBar.ViewModels.BaseViewModels;
 using Prism.Commands;
+using Prism.Events;
+using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
@@ -77,16 +81,21 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels
         public event Action<IDialogResult> RequestClose;
 
         private readonly ILoginService service;
+
+        private readonly IEventAggregator aggregator;
         #endregion
 
         #region 命令
         public DelegateCommand<string> ExecuteCommand { get; private set; }
         #endregion
 
-        public LoginViewModel(ILoginService service)
-        {
+        public LoginViewModel(ILoginService service, IEventAggregator aggregator)
+        { 
             RegisterModel = new RegisterModel();
+
             this.service = service;
+            this.aggregator = aggregator;
+
             ExecuteCommand = new DelegateCommand<string>(Execute);
         }
 
@@ -140,19 +149,27 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels
                 return;
             }
 
-            var result = await service.LoginAsync(new Common.DbContent.Dto.UserDto()
+            try
             {
-                Account = Account,
-                Password = Password
-            });
 
-            if (result.Status)
-            {
-                RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+                var result = await service.LoginAsync(new Common.DbContent.Dto.UserDto()
+                {
+                    Account = Account,
+                    Password = Password
+                });
+
+                if (result.Status)
+                {
+                    RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+                    aggregator.SendHintMessage("登录成功", "Login");
+                }
+                else
+                {
+                    aggregator.SendHintMessage(result.Message, "Login");
+                }
             }
-            else
+            finally
             {
-
             }
 
         }
@@ -170,20 +187,31 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels
 
             if (RegisterModel.Password != RegisterModel.NewPassword)
             {
-                MessageBox.Show("两次命码不一致");
+                aggregator.SendHintMessage("两次命码不一致", "Login");
                 return;
             }
 
-            var result = await service.RegisterAsync(new Common.DbContent.Dto.UserDto()
+            try
             {
-                Account = RegisterModel.Account,
-                Password = RegisterModel.Password,
-                Name = RegisterModel.Name,
-            });
+                var result = await service.RegisterAsync(new Common.DbContent.Dto.UserDto()
+                {
+                    Account = RegisterModel.Account,
+                    Password = RegisterModel.Password,
+                    Name = RegisterModel.Name,
+                });
 
-            if (result.Status)
+                if (result.Status)
+                {
+                    SelectIndex = 0; //注册成功
+                    aggregator.SendHintMessage("注册成功", "Login");
+                }
+                else
+                {
+                    aggregator.SendHintMessage(result.Message, "Login");
+                }
+            }
+            finally
             {
-                SelectIndex = 0; //注册成功
             }
         }
 
