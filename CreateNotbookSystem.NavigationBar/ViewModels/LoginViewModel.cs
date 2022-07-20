@@ -1,5 +1,5 @@
-﻿using CreateNotbookSystem.Common.Common;
-using CreateNotbookSystem.Common.Models;
+﻿using CreateNotbookSystem.Common.Models;
+using CreateNotbookSystem.NavigationBar.Event;
 using CreateNotbookSystem.NavigationBar.Extensions;
 using CreateNotbookSystem.NavigationBar.Service;
 using CreateNotbookSystem.NavigationBar.ViewModels.BaseViewModels;
@@ -91,7 +91,7 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels
         #endregion
 
         public LoginViewModel(ILoginService service, IEventAggregator aggregator)
-        { 
+        {
             RegisterModel = new RegisterModel();
 
             this.service = service;
@@ -161,10 +161,9 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels
 
                 if (result.Status)
                 {
-                    AppSession.Name = result.Result.Name;
-
                     RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
-                    aggregator.SendHintMessage("登录成功", "Login");
+                    //aggregator.SendHintMessage("登录成功", "Login");
+                    aggregator.GetEvent<UserNameEvent>().Publish(result.Result.Name);
                 }
                 else
                 {

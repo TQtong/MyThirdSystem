@@ -1,4 +1,6 @@
-﻿using CreateNotbookSystem.NavigationBar.ViewModels.Index;
+﻿using CreateNotbookSystem.NavigationBar.Event;
+using CreateNotbookSystem.NavigationBar.ViewModels.Index;
+using Prism.Events;
 using Prism.Ioc;
 using System;
 using System.Collections.Generic;
@@ -27,6 +29,5 @@ namespace CreateNotbookSystem.NavigationBar.Views.Index
             InitializeComponent();
 
         }
-
     }
 }

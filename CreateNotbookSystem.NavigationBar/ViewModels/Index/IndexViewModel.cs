@@ -1,12 +1,13 @@
-﻿using CreateNotbookSystem.Common.Common;
-using CreateNotbookSystem.Common.DbContent.Dto;
+﻿using CreateNotbookSystem.Common.DbContent.Dto;
 using CreateNotbookSystem.Common.Models;
 using CreateNotbookSystem.Common.Models.Managers;
 using CreateNotbookSystem.NavigationBar.Commo;
+using CreateNotbookSystem.NavigationBar.Event;
 using CreateNotbookSystem.NavigationBar.Extensions;
 using CreateNotbookSystem.NavigationBar.Service;
 using CreateNotbookSystem.NavigationBar.ViewModels.BaseViewModels;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -64,8 +65,6 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
                 RaisePropertyChanged();
             }
         }
-
-
         #endregion
 
         #region 字段
@@ -93,6 +92,15 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// 定时器
         /// </summary>
         private System.Windows.Threading.DispatcherTimer timer;
+
+        /// <summary>
+        /// 事件聚合器
+        /// </summary>
+        private readonly IEventAggregator aggregator;
+        #endregion
+
+        #region 变量
+        private string userName;
         #endregion
 
         #region 命令
@@ -149,10 +157,12 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
             this.memoService = container.Resolve<IMemoService>();
             this.regionManager = container.Resolve<IRegionManager>();
             this.dialog = container.Resolve<IDialogHostService>();
+            this.aggregator = container.Resolve<IEventAggregator>();
+
+            aggregator.GetEvent<UserNameEvent>().Subscribe(GetName);
 
             CreateTaskBar();
         }
-
 
         #endregion
 
@@ -408,7 +418,18 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels.Index
         /// <param name="e"></param>
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            Title = $"你好，{AppSession.Name}，现在是：{DateTime.Now.ToString("yyyy年MM月dd日 dddd tt HH:mm:ss")}";
+            Title = $"你好，{userName}，现在是：{DateTime.Now.ToString("yyyy年MM月dd日 dddd tt HH:mm:ss")}";
+        }
+
+        /// <summary>
+        /// 获取登录的用户名，用于动态改名字
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void GetName(string obj)
+        {
+            userName = obj;
+            Title = $"你好，{userName}，现在是：{DateTime.Now.ToString("yyyy年MM月dd日 dddd tt HH:mm:ss")}";
         }
         #endregion
     }

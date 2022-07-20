@@ -1,9 +1,10 @@
 ﻿using CreateNotbookSystem.App.Common;
-using CreateNotbookSystem.Common.Common;
 using CreateNotbookSystem.Common.DbContent;
 using CreateNotbookSystem.Common.Models;
 using CreateNotbookSystem.Common.Models.Managers;
+using CreateNotbookSystem.NavigationBar.Event;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -66,10 +67,20 @@ namespace CreateNotbookSystem.App.ViewModels
             }
         }
 
+        private string name;
         /// <summary>
         /// 获取登录的用户名
         /// </summary>
-        public static string Name { get; set; }
+        public string Name
+        {
+            get => name;
+            set
+            {
+                name = value;
+                RaisePropertyChanged();
+            }
+        }
+
 
         #endregion
 
@@ -88,6 +99,11 @@ namespace CreateNotbookSystem.App.ViewModels
         /// 容器
         /// </summary>
         private readonly IContainerProvider container;
+
+        /// <summary>
+        /// 事件聚合器
+        /// </summary>
+        private readonly IEventAggregator aggregator;
         #endregion
 
         #region 命令
@@ -121,10 +137,16 @@ namespace CreateNotbookSystem.App.ViewModels
             HomeCommand = new DelegateCommand(Home);
             ExitCommand = new DelegateCommand(Exit);
 
+            this.aggregator = container.Resolve<IEventAggregator>();
+
+            aggregator.GetEvent<UserNameEvent>().Subscribe(GetName);
+
             this.regionManager = regionManager;
             this.container = container;
             this.IsChecked = false;
         }
+
+
 
 
 
@@ -186,7 +208,7 @@ namespace CreateNotbookSystem.App.ViewModels
         /// </summary>
         private void GoForward()
         {
-            if (journal.CanGoForward)
+            if (journal != null && journal.CanGoForward)
             {
                 journal.GoForward();
             }
@@ -197,7 +219,8 @@ namespace CreateNotbookSystem.App.ViewModels
         /// </summary>
         private void GoBack()
         {
-            if (journal.CanGoBack)
+
+            if (journal != null && journal.CanGoBack)
             {
                 journal.GoBack();
             }
@@ -222,7 +245,7 @@ namespace CreateNotbookSystem.App.ViewModels
             CreateMenuBars();
 
             regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate("IndexView");
-        }
+        } 
 
         /// <summary>
         /// 退出当前账号
@@ -231,6 +254,16 @@ namespace CreateNotbookSystem.App.ViewModels
         private void Exit()
         {
             App.ExitAccout(container);
+        }
+
+        /// <summary>
+        /// 登录成功获取用户名
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void GetName(string obj)
+        {
+            Name = obj;
         }
         #endregion
 
