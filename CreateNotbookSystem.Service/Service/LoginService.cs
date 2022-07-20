@@ -21,7 +21,7 @@ namespace CreateNotbookSystem.Service.Service
          {
             try
             {
-                Password = Password.GetMD5();
+                Password = Password.MD5Encryption();
 
                 var userDb = await work.GetRepository<User>().GetFirstOrDefaultAsync(predicate:
                     x => (x.Account.Equals(Account)) &&
@@ -54,11 +54,33 @@ namespace CreateNotbookSystem.Service.Service
                 }
 
                 user.CreatedDate = DateTime.Now;
-                user.Password = user.Password.GetMD5();
+                user.Password = user.Password.MD5Encryption();
                 await repository.InsertAsync(user);
 
                 if (await work.SaveChangesAsync() > 0)
                 {
+                    return new ApiResponse(true, user);
+                }
+
+                return new ApiResponse("注册失败,请稍后重试！");
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse("注册账号失败！");
+            }
+        }
+
+        public async Task<ApiResponse> RetrieveAsync(string Account)
+        {
+            try
+            {
+                var repository = work.GetRepository<User>();
+                var userDb = await repository.GetFirstOrDefaultAsync(predicate: x => x.Account.Equals(Account));
+                
+
+                if (userDb != null)
+                {
+                    var user = mapper.Map<UserDto>(userDb);
                     return new ApiResponse(true, user);
                 }
 

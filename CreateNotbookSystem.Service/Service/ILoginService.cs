@@ -18,5 +18,12 @@ namespace CreateNotbookSystem.Service.Service
         /// <param name="user"></param>
         /// <returns></returns>
         Task<ApiResponse> RegisterAsync(UserDto user);
+
+        /// <summary>
+        /// 找回密码
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<ApiResponse> RetrieveAsync(string Account);
     }
 }

@@ -121,10 +121,10 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels
             switch (obj)
             {
                 case "Login":
-                    Login();
+                    Login();//登录
                     break;
                 case "Exit":
-                    Exit();
+                    Exit();//退出
                     break;
                 case "GoRegister":
                     SelectIndex = 1;//跳转注册界面
@@ -134,6 +134,12 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels
                     break;
                 case "Register":
                     Register();//注册账号
+                    break;
+                case "GoPassword":
+                    SelectIndex = 2;//跳转找回密码界面
+                    break;
+                case "Retrieve":
+                    Retrieve();//找回密码
                     break;
                 default:
                     break;
@@ -223,6 +229,15 @@ namespace CreateNotbookSystem.NavigationBar.ViewModels
         private void Exit()
         {
             RequestClose?.Invoke(new DialogResult(ButtonResult.No));
+        }
+
+        /// <summary>
+        /// 找回密码
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
+        private void Retrieve()
+        {
+
         }
         #endregion
     }

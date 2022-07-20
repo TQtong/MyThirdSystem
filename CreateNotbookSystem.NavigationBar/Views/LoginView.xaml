@@ -38,6 +38,8 @@
             MessageQueue="{materialDesign:MessageQueue}" />
 
         <materialDesign:Transitioner Grid.Column="1" SelectedIndex="{Binding SelectIndex}">
+
+            <!--  登录界面  -->
             <materialDesign:TransitionerSlide>
                 <DockPanel Margin="5,0" VerticalAlignment="Center">
                     <TextBlock
@@ -75,11 +77,19 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </TextBlock>
-                        <TextBlock DockPanel.Dock="Right" Text="忘记密码?" />
+                        <TextBlock DockPanel.Dock="Right" Text="忘记密码?">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonUp">
+                                    <i:InvokeCommandAction Command="{Binding ExecuteCommand}" CommandParameter="GoPassword" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBlock>
                     </DockPanel>
                 </DockPanel>
             </materialDesign:TransitionerSlide>
+            <!--  登录界面  -->
 
+            <!--  注册界面  -->
             <materialDesign:TransitionerSlide>
                 <DockPanel Margin="15" VerticalAlignment="Center">
                     <TextBlock
@@ -135,6 +145,56 @@
                         Style="{StaticResource MaterialDesignOutlinedButton}" />
                 </DockPanel>
             </materialDesign:TransitionerSlide>
+            <!--  注册界面  -->
+
+            <!--  忘记密码  -->
+            <materialDesign:TransitionerSlide>
+                <DockPanel Margin="15" VerticalAlignment="Center">
+                    <TextBlock
+                        Margin="0,10"
+                        DockPanel.Dock="Top"
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Text="找回密码" />
+
+                    <TextBox
+                        Margin="0,10"
+                        materialDesign:HintAssist.Hint="请输入账号"
+                        DockPanel.Dock="Top"
+                        Text="{Binding RegisterModel.Account}" />
+
+                    <StackPanel
+                        Margin="0,10"
+                        VerticalAlignment="Center"
+                        DockPanel.Dock="Top"
+                        Orientation="Horizontal">
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Foreground="Black"
+                            Text="你的密码是：" />
+                        <TextBlock
+                            Margin="5,10"
+                            VerticalAlignment="Center"
+                            Text="1" />
+                    </StackPanel>
+
+                    <Button
+                        Command="{Binding ExecuteCommand}"
+                        CommandParameter="Register"
+                        Content="找回"
+                        DockPanel.Dock="Top" />
+
+                    <Button
+                        Margin="0,10,0,0"
+                        Command="{Binding ExecuteCommand}"
+                        CommandParameter="GoLogin"
+                        Content="返回登录"
+                        DockPanel.Dock="Top"
+                        Style="{StaticResource MaterialDesignOutlinedButton}" />
+                </DockPanel>
+            </materialDesign:TransitionerSlide>
+            <!--  忘记密码  -->
+
         </materialDesign:Transitioner>
     </Grid>
 </UserControl>
