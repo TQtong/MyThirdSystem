@@ -32,9 +32,8 @@ namespace CreateNotbookSystem.App.Views
             //注册提示消息
             aggregator.ResgiterHintMessage(arg =>
             {
-                snackBar.MessageQueue.Enqueue(arg);
+                snackBar.MessageQueue.Enqueue(arg.Message);
             });
-
 
             //注册等待消息窗口
             aggregator.Resgiter(arg =>

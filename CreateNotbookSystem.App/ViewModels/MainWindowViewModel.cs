@@ -146,10 +146,6 @@ namespace CreateNotbookSystem.App.ViewModels
             this.IsChecked = false;
         }
 
-
-
-
-
         #region 方法
         /// <summary>
         /// 导航栏初始化
